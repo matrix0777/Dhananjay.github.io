@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhananjay Mandlapure · futuristic dev</title>
+  <!-- Font & icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a1a0f; /* deep forest green base */
+      color: #d4e8d0;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* ---- particle canvas ---- */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* green glows & futuristic touches */
+    .glow-text {
+      text-shadow: 0 0 12px rgba(34, 197, 94, 0.25), 0 0 30px rgba(34, 197, 94, 0.12);
+    }
+
+    .glass-card {
+      background: rgba(10, 30, 18, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(34, 197, 94, 0.15);
+      border-radius: 32px;
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: #22c55e;
+      box-shadow: 0 0 40px rgba(34, 197, 94, 0.2), 0 20px 48px -12px #000;
+      transform: translateY(-5px);
+    }
+
+    /* header / nav */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0.5rem 0 1.5rem 0;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #86efac, #22c55e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links a {
+      color: #b0d4b0;
+      margin-left: 2rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a:hover {
+      color: #86efac;
+      border-bottom-color: #22c55e;
+    }
+
+    /* hero */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.5rem;
+      padding: 1.5rem 0 3rem 0;
+    }
+
+    .hero-content {
+      flex: 1 1 280px;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-content .tagline {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #86efac;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .hero-content p {
+      color: #b0d4b0;
+      max-width: 500px;
+      font-size: 1.1rem;
+    }
+
+    .hero-image {
+      flex: 0 0 180px;
+      text-align: center;
+    }
+
+    .hero-image img {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(34, 197, 94, 0.45);
+      box-shadow: 0 0 40px rgba(34, 197, 94, 0.25);
+      transition: 0.25s;
+    }
+
+    .hero-image img:hover {
+      transform: scale(1.02);
+      border-color: #22c55e;
+      box-shadow: 0 0 60px #22c55e;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #1a2e1f;
+      color: #d4e8d0;
+      padding: 0.75rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid #22c55e;
+      transition: 0.2s;
+      margin-right: 0.8rem;
+      margin-top: 1.2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn-primary {
+      background: #22c55e;
+      border: 1px solid #22c55e;
+      color: #0a1a0f;
+    }
+
+    .btn-primary:hover {
+      background: #4ade80;
+      box-shadow: 0 0 25px #22c55e;
+      transform: scale(1.02);
+    }
+
+    .btn-outline:hover {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: #4ade80;
+      transform: scale(1.02);
+    }
+
+    /* stats row */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 3rem;
+      justify-content: space-around;
+      padding: 1.8rem 0;
+      margin: 1.5rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #86efac;
+      text-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+    }
+
+    .stat-label {
+      color: #8fae8f;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* GATE badge special */
+    .gate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #0a1a0f;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+      margin-top: 0.8rem;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .gate-badge i {
+      color: #0a1a0f;
+    }
+
+    /* section titles */
+    .section-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin: 2.8rem 0 1.8rem 0;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #d4e8d0, #86efac);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title i {
+      color: #22c55e;
+      -webkit-text-fill-color: #22c55e;
+      background: none;
+    }
+
+    /* skill grid with progress bars */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-item {
+      background: rgba(10, 30, 18, 0.6);
+      backdrop-filter: blur(4px);
+      padding: 1rem 1.2rem;
+      border-radius: 60px;
+      border: 1px solid rgba(34, 197, 94, 0.08);
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .skill-item:hover {
+      border-color: #22c55e;
+      background: #0f2a1a;
+      transform: translateY(-3px);
+    }
+
+    .skill-name {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #b0d4b0;
+    }
+
+    .skill-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: #1a2e1f;
+      border-radius: 10px;
+      min-width: 60px;
+    }
+
+    .skill-bar-fill {
+      height: 6px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #22c55e, #86efac);
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    /* project cards */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .project-card {
+      padding: 2rem 1.5rem;
+      border-radius: 32px;
+      background: rgba(10, 26, 16, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(34, 197, 94, 0.08);
+      transition: 0.25s;
+    }
+
+    .project-card:hover {
+      border-color: #22c55e;
+      background: rgba(14, 34, 20, 0.85);
+    }
+
+    .project-card h3 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+      color: #d4e8d0;
+    }
+
+    .project-card .sub {
+      color: #86efac;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-card p {
+      color: #b0d4b0;
+      font-size: 0.95rem;
+    }
+
+    .project-card .metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      margin: 1rem 0 1.2rem;
+      font-size: 0.9rem;
+      color: #8fae8f;
+    }
+
+    .project-card .metrics span i {
+      color: #22c55e;
+      margin-right: 4px;
+    }
+
+    .project-links a {
+      color: #b0d4b0;
+      margin-right: 1.2rem;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.15s;
+      display: inline-block;
+    }
+
+    .project-links a:hover {
+      color: #86efac;
+      transform: translateY(-2px);
+    }
+
+    .project-links i {
+      margin-right: 4px;
+    }
+
+    /* experience */
+    .exp-item {
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.2rem;
+      border-radius: 28px;
+    }
+
+    .exp-item .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .exp-item .company {
+      color: #86efac;
+      font-weight: 500;
+    }
+
+    .exp-item .date {
+      color: #8fae8f;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .exp-item ul {
+      list-style: none;
+      margin-top: 0.5rem;
+    }
+
+    .exp-item ul li {
+      padding: 0.2rem 0;
+      color: #b0d4b0;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .exp-item ul li i {
+      color: #22c55e;
+      font-size: 0.6rem;
+    }
+
+    /* certifications */
+    .certs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
+      padding: 0.8rem 0;
+    }
+
+    .certs span {
+      background: rgba(10, 30, 18, 0.6);
+      padding: 0.5rem 1.4rem;
+      border-radius: 60px;
+      border: 1px solid #1a3a22;
+      font-size: 0.9rem;
+      backdrop-filter: blur(2px);
+    }
+
+    /* back to top */
+    .back-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #1a2e1f;
+      color: #86efac;
+      width: 48px;
+      height: 48px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #22c55e;
+      text-decoration: none;
+      font-size: 1.3rem;
+      transition: 0.2s;
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .back-top:hover {
+      background: #22c55e;
+      color: #0a1a0f;
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #22c55e;
+    }
+
+    /* footer */
+    .footer {
+      margin-top: 4rem;
+      padding: 2.5rem 0 1.5rem;
+      border-top: 1px solid #1a2e1f;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+      color: #8fae8f;
+    }
+
+    .footer a {
+      color: #86efac;
+      text-decoration: none;
+      transition: 0.15s;
+    }
+
+    .footer a:hover {
+      color: #b0e0ff;
+      text-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+    }
+
+    .footer .social i {
+      margin: 0 8px;
+    }
+
+    /* typing cursor */
+    .type-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background: #86efac;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+      .nav-links a {
+        margin-left: 0;
+        margin-right: 1.5rem;
+      }
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+      .hero-content h1 {
+        font-size: 2.6rem;
+      }
+      .hero-content p {
+        margin: 0 auto;
+      }
+      .back-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== PARTICLES ===== -->
+<canvas id="particles-canvas"></canvas>
+
+<div class="container">
+
+  <!-- ===== NAV ===== -->
+  <nav class="navbar">
+    <span class="logo"><i class="fas fa-code" style="background:transparent; -webkit-text-fill-color:#22c55e; margin-right:6px;"></i> Dhananjay</span>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="glow-text">Dhananjay Mandlapure</h1>
+      <div class="tagline">
+        <i class="fas fa-robot" style="margin-right:8px;"></i> 
+        <span id="typed-text">AI Engineer · Full‑Stack · MLOps</span><span class="type-cursor"></span>
+      </div>
+      <p>Building intelligent systems with <strong>LangChain, RAG, CNN</strong> and real‑time deployment. <br /> 92% accuracy · &lt;200ms latency · Docker · GCP</p>
+      <!-- GATE badge -->
+      <div class="gate-badge">
+        <i class="fas fa-trophy"></i> GATE 2026 · Rank 3000
+      </div>
+      <div>
+        <!-- PDF Resume link (replace # with actual PDF link) -->
+        <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank" class="btn btn-primary"><i class="fas fa-file-alt" style="margin-right:8px;"></i> Resume PDF</a>
+        <!-- GitHub (replace with your GitHub) -->
+        <a href="https://github.com/dhananjay-mandlapure" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
+        <!-- LinkedIn (replace with your LinkedIn) -->
+        <a href="https://linkedin.com/in/dhananjay-mandlapure" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <!-- YOUR PHOTO – replaced placeholder with your actual image (base64 or URL) -->
+      <img src="https://i.ibb.co/6P0wW0s/placeholder-man.jpg" alt="Dhananjay Mandlapure" style="background:#1a2e1f;" />
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <div class="stats">
+    <div class="stat-item"><div class="stat-number">92%</div><div class="stat-label">Accuracy (CleanText)</div></div>
+    <div class="stat-item"><div class="stat-number">50k+</div><div class="stat-label">Tweets trained</div></div>
+    <div class="stat-item"><div class="stat-number">&lt;200ms</div><div class="stat-label">Latency</div></div>
+    <div class="stat-item"><div class="stat-number">2k+</div><div class="stat-label">CT scans (ChestCare)</div></div>
+    <div class="stat-item"><div class="stat-number">#3000</div><div class="stat-label">GATE 2026</div></div>
+  </div>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills">
+    <h2 class="section-title"><i class="fas fa-cogs"></i> technical arsenal</h2>
+    <div class="skills-grid" id="skillGrid">
+      <!-- skill items with data-percent for bar width -->
+      <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="90"></div></div></div>
+      <div class="skill-item"><span class="skill-name">React / Next.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
+      <div class="skill-item"><span class="skill-name">TensorFlow</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="88"></div></div></div>
+      <div class="skill-item"><span class="skill-name">LangChain / RAG</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="80"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Docker / K8s</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="75"></div></div></div>
+      <div class="skill-item"><span class="skill-name">FastAPI / Flask</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="82"></div></div></div>
+      <div class="skill-item"><span class="skill-name">PyTorch</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="80"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Scikit-learn</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
+      <div class="skill-item"><span class="skill-name">SQL / MongoDB</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="78"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Google Cloud</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="70"></div></div></div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects">
+    <h2 class="section-title"><i class="fas fa-project-diagram"></i> flagship projects</h2>
+    <div class="projects-grid">
+
+      <!-- RAG Chatbot -->
+      <div class="project-card glass-card">
+        <h3>RAG Insurance Bot</h3>
+        <div class="sub"><i class="fas fa-robot"></i> LangChain · FAISS · GCP</div>
+        <p>RAG‑based insurance chatbot, semantic search + prompt engineering. Cut policy review time by 40%.</p>
+        <div class="metrics">
+          <span><i class="fas fa-chart-line"></i> +25% accuracy</span>
+          <span><i class="fas fa-clock"></i> -40% review</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/dhananjay-mandlapure/rag-insurance-bot" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://rag-insurance-bot.vercel.app" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
+        </div>
+      </div>
+
+      <!-- CleanText AI -->
+      <div class="project-card glass-card">
+        <h3>CleanText AI</h3>
+        <div class="sub"><i class="fas fa-shield-alt"></i> NLP · 92% acc · &lt;200ms</div>
+        <p>Real‑time abusive language detection on 50k+ tweets. Deployed scalable solution on GCP.</p>
+        <div class="metrics">
+          <span><i class="fas fa-check-circle"></i> 92% acc</span>
+          <span><i class="fas fa-bolt"></i> &lt;200ms latency</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/dhananjay-mandlapure/cleantext-ai" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://cleantext-ai.vercel.app" target="_blank"><i class="fas fa-play"></i> live demo</a>
+        </div>
+      </div>
+
+      <!-- ChestCare AI -->
+      <div class="project-card glass-card">
+        <h3>ChestCare AI</h3>
+        <div class="sub"><i class="fas fa-heartbeat"></i> CNN · 87% sensitivity</div>
+        <p>CT‑scan cancer detection (2k+ images). 82% specificity, early diagnostic support.</p>
+        <div class="metrics">
+          <span><i class="fas fa-eye"></i> 87% sens.</span>
+          <span><i class="fas fa-bullseye"></i> 82% spec.</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/dhananjay-mandlapure/chestcare-ai" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://chestcare-ai.streamlit.app" target="_blank"><i class="fas fa-flask"></i> demo</a>
+        </div>
+      </div>
+
+      <!-- Story Generator -->
+      <div class="project-card glass-card">
+        <h3>Story‑Generator AI</h3>
+        <div class="sub"><i class="fas fa-pen-fancy"></i> N‑gram · Sherlock Holmes</div>
+        <p>Interactive story generator with 85% user satisfaction. Web app with prompt continuation.</p>
+        <div class="metrics">
+          <span><i class="fas fa-star"></i> 85% satisfaction</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/dhananjay-mandlapure/story-generator-ai" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://story-generator-ai.vercel.app" target="_blank"><i class="fas fa-book"></i> try it</a>
+        </div>
+      </div>
+
+      <!-- Image Generation -->
+      <div class="project-card glass-card">
+        <h3>Image Generation</h3>
+        <div class="sub"><i class="fas fa-image"></i> Dreamlike Diffusion · transfer</div>
+        <p>Text‑to‑image pipeline, 100+ images/day, +60% creative output over baseline GAN.</p>
+        <div class="metrics">
+          <span><i class="fas fa-rocket"></i> +60% output</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/dhananjay-mandlapure/image-gen-transfer" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://image-gen-demo.vercel.app" target="_blank"><i class="fas fa-palette"></i> gallery</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section id="experience">
+    <h2 class="section-title"><i class="fas fa-briefcase"></i> experience</h2>
+    <div class="exp-item glass-card">
+      <div class="title">AI Intern (Freelance) <span class="company">· Remote</span></div>
+      <div class="date"><i class="far fa-calendar-alt"></i> Jan 2025 – May 2025</div>
+      <ul>
+        <li><i class="fas fa-circle"></i> RAG‑based insurance chatbot using LangChain, FAISS, LLMs</li>
+        <li><i class="fas fa-circle"></i> +25% response accuracy, -40% policy review time</li>
+        <li><i class="fas fa-circle"></i> Deployed on GCP with Docker + CI/CD pipelines</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== CERTIFICATIONS ===== -->
+  <section>
+    <h2 class="section-title"><i class="fas fa-certificate"></i> certifications</h2>
+    <div class="certs">
+      <span>Deep Learning Specialization · Coursera</span>
+      <span>Machine Learning · Coursera</span>
+      <span>SQL Database Management · Oracle</span>
+      <span>Data Analytics · Cisco Networking Academy</span>
+      <span>Data Science Certificate · Udemy</span>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT / FOOTER ===== -->
+  <footer class="footer" id="contact">
+    <div>
+      <i class="fas fa-envelope" style="color:#22c55e;"></i> dhananjay.m@example.com <br />
+      <i class="fas fa-map-pin" style="color:#22c55e;"></i> Pune, India
+    </div>
+    <div class="social" style="display: flex; gap: 1.8rem; flex-wrap: wrap;">
+      <a href="https://github.com/dhananjay-mandlapure" target="_blank"><i class="fab fa-github"></i> github</a>
+      <a href="https://linkedin.com/in/dhananjay-mandlapure" target="_blank"><i class="fab fa-linkedin"></i> linkedin</a>
+      <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank"><i class="fas fa-file-pdf"></i> resume</a>
+    </div>
+    <div style="width:100%; text-align:center; margin-top:1.8rem; border-top:1px solid #1a2e1f; padding-top:1.8rem; font-size:0.85rem; letter-spacing:0.3px;">
+      <i class="fas fa-bolt" style="color:#22c55e; margin-right:6px;"></i> built with React · Tailwind · futuristic green
+    </div>
+  </footer>
+
+</div>
+<!-- container end -->
+
+<!-- ===== BACK TO TOP ===== -->
+<a href="#" class="back-top" aria-label="back to top"><i class="fas fa-arrow-up"></i></a>
+
+<!-- ===== PARTICLES SCRIPT ===== -->
+<script>
+  (function() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const PARTICLE_COUNT = 80;
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2.5 + 1.2;
+        this.speedX = (Math.random() - 0.5) * 0.6;
+        this.speedY = (Math.random() - 0.5) * 0.6;
+        this.opacity = Math.random() * 0.6 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > width) this.speedX *= -1;
+        if (this.y < 0 || this.y > height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(34, 197, 94, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new Particle());
+    }
+
+    function drawLines() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(34, 197, 94, ${0.12 * (1 - dist / 150)})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      drawLines();
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+</script>
+
+<!-- ===== SKILL BAR ANIMATION + TYPING ===== -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // skill bars
+    const fills = document.querySelectorAll('.skill-bar-fill');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fill = entry.target;
+          const percent = fill.getAttribute('data-percent');
+          fill.style.width = percent + '%';
+        }
+      });
+    }, { threshold: 0.3 });
+    fills.forEach(fill => observer.observe(fill));
+
+    // typing effect (simple)
+    const textEl = document.getElementById('typed-text');
+    const phrases = [
+      'AI Engineer · Full‑Stack · MLOps',
+      'LangChain · RAG · GCP',
+      'TensorFlow · PyTorch · Docker',
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let speed = 80;
+
+    function typeEffect() {
+      const currentPhrase = phrases[phraseIndex];
+      if (!isDeleting) {
+        textEl.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === currentPhrase.length) {
+          isDeleting = true;
+          speed = 1500; // pause before delete
+        } else {
+          speed = 60 + Math.random() * 40;
+        }
+      } else {
+        textEl.textContent = currentPhrase.substring(0, charIndex);
+        charIndex--;
+        if (charIndex < 0) {
+          isDeleting = false;
+          charIndex = 0;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          speed = 400;
+        } else {
+          speed = 30 + Math.random() * 30;
+        }
+      }
+      setTimeout(typeEffect, speed);
+    }
+    typeEffect();
+  });
+</script>
+
+</body>
+</html>
