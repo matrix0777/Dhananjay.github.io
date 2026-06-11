@@ -460,32 +460,6 @@
       box-shadow: 0 0 30px #22c55e;
     }
 
-    .footer {
-      margin-top: 4rem;
-      padding: 2.5rem 0 1.5rem;
-      border-top: 1px solid #1a2e1f;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 2rem;
-      color: #8fae8f;
-    }
-
-    .footer a {
-      color: #86efac;
-      text-decoration: none;
-      transition: 0.15s;
-    }
-
-    .footer a:hover {
-      color: #b0e0ff;
-      text-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
-    }
-
-    .footer .social i {
-      margin: 0 8px;
-    }
-
     .type-cursor {
       display: inline-block;
       width: 3px;
@@ -547,6 +521,7 @@
   <nav class="navbar">
     <span class="logo"><i class="fas fa-code" style="background:transparent; -webkit-text-fill-color:#22c55e; margin-right:6px;"></i> Dhananjay</span>
     <div class="nav-links">
+      <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
@@ -567,8 +542,8 @@
       </div>
       <div>
         <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank" class="btn btn-primary"><i class="fas fa-file-alt" style="margin-right:8px;"></i> Resume PDF</a>
-        <a href="https://github.com/dhananjay-mandlapure" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
-        <a href="https://linkedin.com/in/dhananjay-mandlapure" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://github.com/matrix0777" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/dhananjay-mandlapure-642963240/" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
       </div>
     </div>
     <div class="hero-image">
@@ -584,10 +559,32 @@
     <div class="stat-item"><div class="stat-number">#3000</div><div class="stat-label">GATE 2026</div></div>
   </div>
 
+  <!-- ===== ABOUT ME ===== -->
+  <section id="about">
+    <h2 class="section-title"><i class="fas fa-user"></i> about me</h2>
+    <div class="glass-card" style="padding: 2rem;">
+      <p style="font-size: 1.1rem; line-height: 1.8;">
+        I'm a passionate <strong>AI Engineer</strong> and <strong>Full-Stack Developer</strong> with a deep interest in 
+        <strong>Natural Language Processing</strong>, <strong>Computer Vision</strong>, and <strong>MLOps</strong>. 
+        Currently pursuing my B.Tech in Artificial Intelligence and Data Science at AISSMS Institute of Information Technology, Pune.
+      </p>
+      <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+        I love building end-to-end AI solutions — from data preprocessing and model training to deployment using 
+        <strong>Docker</strong>, <strong>Kubernetes</strong>, and <strong>CI/CD pipelines</strong>. 
+        I've worked on <strong>RAG-based chatbots</strong>, <strong>medical imaging AI</strong>, and <strong>agentic applications</strong>.
+      </p>
+      <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+        I'm also a <strong>GATE 2026 qualifier</strong> with an All India Rank of <strong>3000</strong>. 
+        I'm always excited to learn new technologies and collaborate on innovative projects.
+      </p>
+    </div>
+  </section>
+
   <section id="skills">
     <h2 class="section-title"><i class="fas fa-cogs"></i> technical arsenal</h2>
     <div class="skills-grid" id="skillGrid">
       <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="90"></div></div></div>
+      <div class="skill-item"><span class="skill-name">C / C++</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
       <div class="skill-item"><span class="skill-name">React / Next.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
       <div class="skill-item"><span class="skill-name">TensorFlow</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="88"></div></div></div>
       <div class="skill-item"><span class="skill-name">LangChain / RAG</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="80"></div></div></div>
@@ -614,23 +611,53 @@
           <span><i class="fas fa-bolt"></i> &lt;200ms latency</span>
         </div>
         <div class="project-links">
-          <a href="https://github.com/dhananjay-mandlapure/cleantext-ai" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://github.com/matrix0777/NLP-proj1.git" target="_blank"><i class="fab fa-github"></i> code</a>
           <a href="https://cleantext-ai.vercel.app" target="_blank"><i class="fas fa-play"></i> live demo</a>
         </div>
       </div>
 
-      <!-- ChestCare AI -->
+      <!-- ChestCare AI (Medical LLM) -->
       <div class="project-card glass-card">
         <h3>ChestCare AI</h3>
-        <div class="sub"><i class="fas fa-heartbeat"></i> CNN · 87% sensitivity</div>
-        <p>CT‑scan cancer detection (2k+ images). 82% specificity, early diagnostic support.</p>
+        <div class="sub"><i class="fas fa-heartbeat"></i> Medical LLM · CT Scan</div>
+        <p>CT‑scan cancer detection using Medical LLM. 87% sensitivity, 82% specificity, early diagnostic support.</p>
         <div class="metrics">
           <span><i class="fas fa-eye"></i> 87% sens.</span>
           <span><i class="fas fa-bullseye"></i> 82% spec.</span>
         </div>
         <div class="project-links">
-          <a href="https://github.com/dhananjay-mandlapure/chestcare-ai" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://github.com/matrix0777/Medical-llm.git" target="_blank"><i class="fab fa-github"></i> code</a>
           <a href="https://chestcare-ai.streamlit.app" target="_blank"><i class="fas fa-flask"></i> demo</a>
+        </div>
+      </div>
+
+      <!-- RAG Application (Bajaj) -->
+      <div class="project-card glass-card">
+        <h3>RAG Insurance Bot</h3>
+        <div class="sub"><i class="fas fa-robot"></i> LangChain · FAISS · GCP</div>
+        <p>RAG‑based insurance chatbot, semantic search + prompt engineering. Cut policy review time by 40%.</p>
+        <div class="metrics">
+          <span><i class="fas fa-chart-line"></i> +25% accuracy</span>
+          <span><i class="fas fa-clock"></i> -40% review</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/matrix0777/Bajaj.git" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://rag-insurance-bot.vercel.app" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
+        </div>
+      </div>
+
+      <!-- Agentic Application -->
+      <div class="project-card glass-card">
+        <h3>Agentic AI</h3>
+        <div class="sub"><i class="fas fa-brain"></i> LangGraph · CrewAI · Agents</div>
+        <p>Agentic application using LangGraph and CrewAI for autonomous task execution and multi-agent collaboration.</p>
+        <div class="metrics">
+          <span><i class="fas fa-code-branch"></i> Multi-Agent</span>
+          <span><i class="fas fa-bolt"></i> Autonomous</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/matrix0777/Agents.git" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="#" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
         </div>
       </div>
 
@@ -662,21 +689,6 @@
         </div>
       </div>
 
-      <!-- RAG Insurance Bot -->
-      <div class="project-card glass-card">
-        <h3>RAG Insurance Bot</h3>
-        <div class="sub"><i class="fas fa-robot"></i> LangChain · FAISS · GCP</div>
-        <p>RAG‑based insurance chatbot, semantic search + prompt engineering. Cut policy review time by 40%.</p>
-        <div class="metrics">
-          <span><i class="fas fa-chart-line"></i> +25% accuracy</span>
-          <span><i class="fas fa-clock"></i> -40% review</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/dhananjay-mandlapure/rag-insurance-bot" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://rag-insurance-bot.vercel.app" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -704,20 +716,29 @@
     </div>
   </section>
 
-  <footer class="footer" id="contact">
-    <div>
-      <i class="fas fa-envelope" style="color:#22c55e;"></i> dhananjay.m@example.com <br />
-      <i class="fas fa-map-pin" style="color:#22c55e;"></i> Pune, India
+  <section id="contact">
+    <h2 class="section-title"><i class="fas fa-envelope"></i> contact</h2>
+    <div class="glass-card" style="padding: 2rem; text-align: center;">
+      <p style="font-size: 1.1rem;">
+        <i class="fas fa-envelope" style="color:#22c55e; margin-right: 10px;"></i> 
+        <a href="mailto:mandlapured@gmail.com" style="color: #86efac; text-decoration: none;">mandlapured@gmail.com</a>
+      </p>
+      <p style="font-size: 1.1rem; margin-top: 0.5rem;">
+        <i class="fas fa-map-pin" style="color:#22c55e; margin-right: 10px;"></i> Pune, India
+      </p>
+      <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
+        <a href="https://github.com/matrix0777" target="_blank" style="color: #86efac; text-decoration: none; font-size: 1.2rem;">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/dhananjay-mandlapure-642963240/" target="_blank" style="color: #86efac; text-decoration: none; font-size: 1.2rem;">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank" style="color: #86efac; text-decoration: none; font-size: 1.2rem;">
+          <i class="fas fa-file-pdf"></i> Resume
+        </a>
+      </div>
     </div>
-    <div class="social" style="display: flex; gap: 1.8rem; flex-wrap: wrap;">
-      <a href="https://github.com/dhananjay-mandlapure" target="_blank"><i class="fab fa-github"></i> github</a>
-      <a href="https://linkedin.com/in/dhananjay-mandlapure" target="_blank"><i class="fab fa-linkedin"></i> linkedin</a>
-      <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank"><i class="fas fa-file-pdf"></i> resume</a>
-    </div>
-    <div style="width:100%; text-align:center; margin-top:1.8rem; border-top:1px solid #1a2e1f; padding-top:1.8rem; font-size:0.85rem; letter-spacing:0.3px;">
-      <i class="fas fa-bolt" style="color:#22c55e; margin-right:6px;"></i> built with React · Tailwind · futuristic green
-    </div>
-  </footer>
+  </section>
 
 </div>
 
