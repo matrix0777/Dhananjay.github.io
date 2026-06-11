@@ -15,7 +15,7 @@
     }
 
     body {
-      background: #0a1a0f; /* deep forest green base */
+      background: #0a1a0f;
       color: #d4e8d0;
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
@@ -23,7 +23,6 @@
       overflow-x: hidden;
     }
 
-    /* ---- particle canvas ---- */
     #particles-canvas {
       position: fixed;
       top: 0;
@@ -42,7 +41,6 @@
       z-index: 1;
     }
 
-    /* green glows & futuristic touches */
     .glow-text {
       text-shadow: 0 0 12px rgba(34, 197, 94, 0.25), 0 0 30px rgba(34, 197, 94, 0.12);
     }
@@ -63,7 +61,6 @@
       transform: translateY(-5px);
     }
 
-    /* header / nav */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -98,7 +95,6 @@
       border-bottom-color: #22c55e;
     }
 
-    /* hero */
     .hero {
       display: flex;
       flex-wrap: wrap;
@@ -133,18 +129,21 @@
     }
 
     .hero-image {
-      flex: 0 0 180px;
+      flex: 0 0 220px;
       text-align: center;
     }
 
     .hero-image img {
-      width: 170px;
-      height: 170px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
       object-fit: cover;
+      object-position: top center;
       border: 3px solid rgba(34, 197, 94, 0.45);
       box-shadow: 0 0 40px rgba(34, 197, 94, 0.25);
       transition: 0.25s;
+      display: block;
+      margin: 0 auto;
     }
 
     .hero-image img:hover {
@@ -186,7 +185,6 @@
       transform: scale(1.02);
     }
 
-    /* stats row */
     .stats {
       display: flex;
       flex-wrap: wrap;
@@ -216,7 +214,6 @@
       letter-spacing: 1px;
     }
 
-    /* GATE badge special */
     .gate-badge {
       display: inline-flex;
       align-items: center;
@@ -236,7 +233,6 @@
       color: #0a1a0f;
     }
 
-    /* section titles */
     .section-title {
       font-size: 2.4rem;
       font-weight: 700;
@@ -257,7 +253,6 @@
       background: none;
     }
 
-    /* skill grid with progress bars */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -306,7 +301,6 @@
       transition: width 0.6s ease;
     }
 
-    /* project cards */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -381,7 +375,6 @@
       margin-right: 4px;
     }
 
-    /* experience */
     .exp-item {
       padding: 1.8rem 2rem;
       margin-bottom: 1.2rem;
@@ -423,7 +416,6 @@
       font-size: 0.6rem;
     }
 
-    /* certifications */
     .certs {
       display: flex;
       flex-wrap: wrap;
@@ -440,7 +432,6 @@
       backdrop-filter: blur(2px);
     }
 
-    /* back to top */
     .back-top {
       position: fixed;
       bottom: 2rem;
@@ -469,7 +460,6 @@
       box-shadow: 0 0 30px #22c55e;
     }
 
-    /* footer */
     .footer {
       margin-top: 4rem;
       padding: 2.5rem 0 1.5rem;
@@ -496,7 +486,6 @@
       margin: 0 8px;
     }
 
-    /* typing cursor */
     .type-cursor {
       display: inline-block;
       width: 3px;
@@ -512,7 +501,6 @@
       50% { opacity: 0; }
     }
 
-    /* responsive */
     @media (max-width: 640px) {
       .navbar {
         flex-direction: column;
@@ -533,6 +521,13 @@
       .hero-content p {
         margin: 0 auto;
       }
+      .hero-image {
+        flex: 0 0 180px;
+      }
+      .hero-image img {
+        width: 160px;
+        height: 160px;
+      }
       .back-top {
         bottom: 1rem;
         right: 1rem;
@@ -545,12 +540,10 @@
 </head>
 <body>
 
-<!-- ===== PARTICLES ===== -->
 <canvas id="particles-canvas"></canvas>
 
 <div class="container">
 
-  <!-- ===== NAV ===== -->
   <nav class="navbar">
     <span class="logo"><i class="fas fa-code" style="background:transparent; -webkit-text-fill-color:#22c55e; margin-right:6px;"></i> Dhananjay</span>
     <div class="nav-links">
@@ -561,7 +554,6 @@
     </div>
   </nav>
 
-  <!-- ===== HERO ===== -->
   <section class="hero">
     <div class="hero-content">
       <h1 class="glow-text">Dhananjay Mandlapure</h1>
@@ -570,26 +562,20 @@
         <span id="typed-text">AI Engineer · Full‑Stack · MLOps</span><span class="type-cursor"></span>
       </div>
       <p>Building intelligent systems with <strong>LangChain, RAG, CNN</strong> and real‑time deployment. <br /> 92% accuracy · &lt;200ms latency · Docker · GCP</p>
-      <!-- GATE badge -->
       <div class="gate-badge">
         <i class="fas fa-trophy"></i> GATE 2026 · Rank 3000
       </div>
       <div>
-        <!-- PDF Resume link (replace # with actual PDF link) -->
         <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank" class="btn btn-primary"><i class="fas fa-file-alt" style="margin-right:8px;"></i> Resume PDF</a>
-        <!-- GitHub (replace with your GitHub) -->
         <a href="https://github.com/dhananjay-mandlapure" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
-        <!-- LinkedIn (replace with your LinkedIn) -->
         <a href="https://linkedin.com/in/dhananjay-mandlapure" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
       </div>
     </div>
     <div class="hero-image">
-      <!-- YOUR PHOTO – replaced placeholder with your actual image (base64 or URL) -->
-      <img src="https://raw.githubusercontent.com/matrix0777/Dhananjay.github.io/main/profile.jpeg" alt="Dhananjay Mandlapure" style="background:#1a2e1f;" />
+      <img src="https://raw.githubusercontent.com/matrix0777/Dhananjay.github.io/main/profile.jpeg" alt="Dhananjay Mandlapure" />
     </div>
   </section>
 
-  <!-- ===== STATS ===== -->
   <div class="stats">
     <div class="stat-item"><div class="stat-number">92%</div><div class="stat-label">Accuracy (CleanText)</div></div>
     <div class="stat-item"><div class="stat-number">50k+</div><div class="stat-label">Tweets trained</div></div>
@@ -598,11 +584,9 @@
     <div class="stat-item"><div class="stat-number">#3000</div><div class="stat-label">GATE 2026</div></div>
   </div>
 
-  <!-- ===== SKILLS ===== -->
   <section id="skills">
     <h2 class="section-title"><i class="fas fa-cogs"></i> technical arsenal</h2>
     <div class="skills-grid" id="skillGrid">
-      <!-- skill items with data-percent for bar width -->
       <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="90"></div></div></div>
       <div class="skill-item"><span class="skill-name">React / Next.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
       <div class="skill-item"><span class="skill-name">TensorFlow</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="88"></div></div></div>
@@ -616,25 +600,9 @@
     </div>
   </section>
 
-  <!-- ===== PROJECTS ===== -->
   <section id="projects">
     <h2 class="section-title"><i class="fas fa-project-diagram"></i> flagship projects</h2>
     <div class="projects-grid">
-
-      <!-- RAG Chatbot -->
-      <div class="project-card glass-card">
-        <h3>RAG Insurance Bot</h3>
-        <div class="sub"><i class="fas fa-robot"></i> LangChain · FAISS · GCP</div>
-        <p>RAG‑based insurance chatbot, semantic search + prompt engineering. Cut policy review time by 40%.</p>
-        <div class="metrics">
-          <span><i class="fas fa-chart-line"></i> +25% accuracy</span>
-          <span><i class="fas fa-clock"></i> -40% review</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/dhananjay-mandlapure/rag-insurance-bot" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://rag-insurance-bot.vercel.app" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
-        </div>
-      </div>
 
       <!-- CleanText AI -->
       <div class="project-card glass-card">
@@ -694,10 +662,24 @@
         </div>
       </div>
 
+      <!-- RAG Insurance Bot -->
+      <div class="project-card glass-card">
+        <h3>RAG Insurance Bot</h3>
+        <div class="sub"><i class="fas fa-robot"></i> LangChain · FAISS · GCP</div>
+        <p>RAG‑based insurance chatbot, semantic search + prompt engineering. Cut policy review time by 40%.</p>
+        <div class="metrics">
+          <span><i class="fas fa-chart-line"></i> +25% accuracy</span>
+          <span><i class="fas fa-clock"></i> -40% review</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/dhananjay-mandlapure/rag-insurance-bot" target="_blank"><i class="fab fa-github"></i> code</a>
+          <a href="https://rag-insurance-bot.vercel.app" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ===== EXPERIENCE ===== -->
   <section id="experience">
     <h2 class="section-title"><i class="fas fa-briefcase"></i> experience</h2>
     <div class="exp-item glass-card">
@@ -711,7 +693,6 @@
     </div>
   </section>
 
-  <!-- ===== CERTIFICATIONS ===== -->
   <section>
     <h2 class="section-title"><i class="fas fa-certificate"></i> certifications</h2>
     <div class="certs">
@@ -723,7 +704,6 @@
     </div>
   </section>
 
-  <!-- ===== CONTACT / FOOTER ===== -->
   <footer class="footer" id="contact">
     <div>
       <i class="fas fa-envelope" style="color:#22c55e;"></i> dhananjay.m@example.com <br />
@@ -740,12 +720,9 @@
   </footer>
 
 </div>
-<!-- container end -->
 
-<!-- ===== BACK TO TOP ===== -->
 <a href="#" class="back-top" aria-label="back to top"><i class="fas fa-arrow-up"></i></a>
 
-<!-- ===== PARTICLES SCRIPT ===== -->
 <script>
   (function() {
     const canvas = document.getElementById('particles-canvas');
@@ -820,10 +797,8 @@
   })();
 </script>
 
-<!-- ===== SKILL BAR ANIMATION + TYPING ===== -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // skill bars
     const fills = document.querySelectorAll('.skill-bar-fill');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -836,7 +811,6 @@
     }, { threshold: 0.3 });
     fills.forEach(fill => observer.observe(fill));
 
-    // typing effect (simple)
     const textEl = document.getElementById('typed-text');
     const phrases = [
       'AI Engineer · Full‑Stack · MLOps',
@@ -855,7 +829,7 @@
         charIndex++;
         if (charIndex === currentPhrase.length) {
           isDeleting = true;
-          speed = 1500; // pause before delete
+          speed = 1500;
         } else {
           speed = 60 + Math.random() * 40;
         }
