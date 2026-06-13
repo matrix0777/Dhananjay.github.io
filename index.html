@@ -3,20 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Dhananjay Mandlapure · Neural Singularity</title>
+  <title>Dhananjay Mandlapure · Neural Attractor</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-    body { background: #030b06; color: #d0ffd8; font-family: 'Inter', 'Space Mono', monospace; line-height: 1.5; scroll-behavior: smooth; overflow-x: hidden; }
-    #nn-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; background: radial-gradient(circle at 20% 30%, #011a0a, #000000); cursor: crosshair; }
-    .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem 2rem; position: relative; z-index: 5; }
+    body { background: #030b06; color: #d0ffd8; font-family: 'Inter', 'Space Mono', monospace; line-height: 1.5; overflow-x: hidden; }
     
-    /* Animation classes */
+    #nn-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      display: block;
+      background: radial-gradient(circle at 20% 30%, #011a0a, #000000);
+      cursor: crosshair;
+      pointer-events: auto;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 20;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      pointer-events: none;
+    }
+    
+    .container a, .container .btn-neon, .container .nav-links a, .container .back-top, 
+    .container .project-links a, .container .skill-node, .container .nn-card, 
+    .container .exp-log, .container .certs-chip span, .container .gate-badge-nn,
+    .container .profile-pic, .container .terminal-block, .container .navbar {
+      pointer-events: auto;
+    }
+    
+    /* Bulb button - compact and elegant */
+    .bulb-wrapper {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 200;
+      pointer-events: auto;
+    }
+    
+    .bulb-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(62, 255, 110, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      box-shadow: 0 0 15px rgba(62, 255, 110, 0.2);
+    }
+    
+    .bulb-btn i {
+      color: #ffaa44;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      animation: bulbGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes bulbGlow {
+      0%, 100% { text-shadow: 0 0 5px rgba(255, 170, 68, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(255, 170, 68, 0.9), 0 0 30px rgba(255, 170, 68, 0.5); }
+    }
+    
+    .bulb-btn:hover {
+      background: rgba(10, 30, 15, 0.85);
+      border-color: #ffaa44;
+      box-shadow: 0 0 25px rgba(255, 170, 68, 0.4);
+    }
+    
+    .bulb-btn:hover i {
+      color: #ffcc66;
+      animation: none;
+      text-shadow: 0 0 15px rgba(255, 200, 100, 0.8);
+    }
+    
+    /* Tooltip popup - appears on hover */
+    .bulb-tooltip {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(62, 255, 110, 0.5);
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: #aaffcc;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.3px;
+    }
+    
+    .bulb-wrapper:hover .bulb-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .bulb-tooltip span {
+      color: #ffaa44;
+      font-weight: bold;
+    }
+    
+    .bulb-tooltip::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      right: 16px;
+      width: 14px;
+      height: 14px;
+      background: rgba(0, 0, 0, 0.85);
+      border-left: 1px solid rgba(62, 255, 110, 0.5);
+      border-top: 1px solid rgba(62, 255, 110, 0.5);
+      transform: rotate(45deg);
+    }
+    
+    /* Pulse ring around bulb */
+    .bulb-btn::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 170, 68, 0.3);
+      animation: pulseRing 2s ease-out infinite;
+    }
+    
+    @keyframes pulseRing {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    
     .animate-on-scroll {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
+      pointer-events: auto;
     }
     .animate-on-scroll.visible {
       opacity: 1;
@@ -29,45 +170,55 @@
     .certs-chip span.animate-on-scroll { transform: scale(0.9); }
     .certs-chip span.animate-on-scroll.visible { transform: scale(1); }
     
-    .glass-card:hover, .nn-card:hover { border-color: #4eff6e; box-shadow: 0 0 22px rgba(78, 255, 110, 0.18); background: rgba(0, 20, 6, 0.45); }
-    .navbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 0.6rem 0.2rem 1rem 0.2rem; border-bottom: 1px solid rgba(78, 255, 110, 0.45); margin-bottom: 1.5rem; }
-    .logo { font-family: 'Space Mono', monospace; font-size: 1.45rem; font-weight: 700; background: linear-gradient(135deg, #b4ffb0, #3eff72); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .glass-card { background: rgba(0, 15, 5, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(70, 255, 100, 0.3); border-radius: 32px; transition: 0.25s ease; pointer-events: none; }
+    .glass-card:hover { border-color: #4eff6e; box-shadow: 0 0 22px rgba(78, 255, 110, 0.18); background: rgba(0, 20, 6, 0.5); }
+    .navbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 0.6rem 0.2rem 1rem 0.2rem; border-bottom: 1px solid rgba(78, 255, 110, 0.45); margin-bottom: 1.5rem; pointer-events: auto; }
+    .logo { font-family: 'Space Mono', monospace; font-size: 1.45rem; font-weight: 700; background: linear-gradient(135deg, #b4ffb0, #3eff72); -webkit-background-clip: text; background-clip: text; color: transparent; pointer-events: auto; }
     .logo i { background: none; -webkit-text-fill-color: #3eff6e; }
-    .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { color: #caffda; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid transparent; transition: 0.2s; }
+    .nav-links { display: flex; gap: 2rem; pointer-events: auto; }
+    .nav-links a { color: #caffda; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid transparent; transition: 0.2s; pointer-events: auto; }
     .nav-links a:hover { color: #8effaa; border-bottom-color: #3eff6e; text-shadow: 0 0 4px #2eff6e; }
-    .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 2.5rem; align-items: center; margin: 1rem 0 2rem; }
-    .terminal-block { background: rgba(0, 20, 5, 0.45); backdrop-filter: blur(12px); border-left: 5px solid #3eff6e; border-radius: 28px; padding: 2rem; }
-    .prompt-line { font-family: 'Space Mono', monospace; font-size: 0.95rem; color: #bbffcc; margin: 0.4rem 0; }
+    .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 2.5rem; align-items: center; margin: 1rem 0 2rem; pointer-events: auto; }
+    .terminal-block { background: rgba(0, 20, 5, 0.45); backdrop-filter: blur(12px); border-left: 5px solid #3eff6e; border-radius: 28px; padding: 2rem; pointer-events: auto; }
+    .prompt-line { font-family: 'Space Mono', monospace; font-size: 0.95rem; color: #bbffcc; margin: 0.4rem 0; pointer-events: auto; }
     .symbol { color: #6eff8e; font-weight: bold; }
     .hero-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #e3ffe6, #7effa3); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0.4rem 0; }
-    .gate-badge-nn { background: linear-gradient(135deg, #f5b042, #d98e04); display: inline-flex; align-items: center; gap: 8px; padding: 0.3rem 1.2rem; border-radius: 40px; font-weight: bold; color: #031e0a; font-size: 0.8rem; margin-top: 10px; }
-    .profile-pic { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; border: 2px solid #4eff6e; box-shadow: 0 0 28px rgba(62, 255, 110, 0.5); background: #0a2a12; transition: 0.25s; }
-    .stats-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; background: rgba(0, 18, 6, 0.45); backdrop-filter: blur(12px); border-radius: 48px; padding: 1rem 2rem; margin: 2rem 0; border: 1px solid rgba(62, 255, 110, 0.35); }
+    .gate-badge-nn { background: linear-gradient(135deg, #f5b042, #d98e04); display: inline-flex; align-items: center; gap: 8px; padding: 0.3rem 1.2rem; border-radius: 40px; font-weight: bold; color: #031e0a; font-size: 0.8rem; margin-top: 10px; pointer-events: auto; }
+    .profile-pic { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; border: 2px solid #4eff6e; box-shadow: 0 0 28px rgba(62, 255, 110, 0.5); background: #0a2a12; transition: 0.25s; pointer-events: auto; }
+    .stats-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; background: rgba(0, 18, 6, 0.45); backdrop-filter: blur(12px); border-radius: 48px; padding: 1rem 2rem; margin: 2rem 0; border: 1px solid rgba(62, 255, 110, 0.35); pointer-events: auto; }
     .stat-cell { text-align: center; font-family: 'Space Mono', monospace; }
     .stat-number { font-size: 1.8rem; font-weight: 800; color: #88ffaa; }
-    .section-head { display: flex; align-items: baseline; gap: 12px; margin: 3rem 0 1.5rem 0; border-left: 5px solid #3eff6e; padding-left: 1rem; }
+    .section-head { display: flex; align-items: baseline; gap: 12px; margin: 3rem 0 1.5rem 0; border-left: 5px solid #3eff6e; padding-left: 1rem; pointer-events: auto; }
     .section-head h2 { font-size: 1.8rem; font-weight: 700; font-family: 'Space Mono', monospace; }
     .section-head i { color: #6eff8e; font-size: 1.6rem; }
-    .skills-neural { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-    .skill-node { background: rgba(11, 36, 18, 0.7); backdrop-filter: blur(4px); border-radius: 60px; padding: 0.7rem 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px solid rgba(47, 120, 64, 0.6); transition: 0.2s; }
+    .skills-neural { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; pointer-events: auto; }
+    .skill-node { background: rgba(11, 36, 18, 0.7); backdrop-filter: blur(4px); border-radius: 60px; padding: 0.7rem 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px solid rgba(47, 120, 64, 0.6); transition: 0.2s; pointer-events: auto; }
     .skill-node:hover { border-color: #6eff9e; transform: translateX(6px) scale(1.02); background: rgba(17, 51, 28, 0.9); }
     .skill-name { font-weight: 600; font-size: 0.9rem; }
     .level-bar-nn { width: 100px; height: 6px; background: #1e4226; border-radius: 10px; overflow: hidden; }
     .level-fill-nn { width: 0%; height: 100%; background: linear-gradient(90deg, #3eff6e, #b0ffb0); border-radius: 10px; transition: width 0.8s ease; }
-    .projects-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-    .nn-card { background: rgba(2, 20, 6, 0.5); backdrop-filter: blur(8px); border-radius: 32px; padding: 1.8rem; border: 1px solid rgba(62, 255, 110, 0.3); transition: 0.25s; }
+    .projects-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; pointer-events: auto; }
+    .nn-card { background: rgba(2, 20, 6, 0.5); backdrop-filter: blur(8px); border-radius: 32px; padding: 1.8rem; border: 1px solid rgba(62, 255, 110, 0.3); transition: 0.25s; pointer-events: auto; }
     .nn-card:hover { border-color: #6eff8e; transform: translateY(-6px); background: rgba(6, 32, 14, 0.7); }
     .nn-card h3 { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
     .metrics-badge { display: flex; gap: 1rem; margin: 0.8rem 0; font-size: 0.75rem; color: #bbffcc; }
-    .project-links a { color: #c6ffd4; margin-right: 1.2rem; font-size: 0.85rem; text-decoration: none; border-bottom: 1px dashed #5eff8e; }
-    .exp-log { background: rgba(3, 17, 8, 0.6); backdrop-filter: blur(6px); border-radius: 24px; padding: 1.5rem; margin-bottom: 1.2rem; border-left: 6px solid #3eff6e; }
-    .certs-chip { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .certs-chip span { background: rgba(15, 47, 26, 0.7); backdrop-filter: blur(4px); padding: 0.4rem 1.2rem; border-radius: 30px; font-family: monospace; font-size: 0.8rem; border: 1px solid #3eff6e55; }
-    .btn-neon { background: rgba(15, 42, 26, 0.7); backdrop-filter: blur(4px); border: 1px solid #5eff8e; padding: 0.6rem 1.4rem; border-radius: 60px; color: #e0ffe6; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; text-decoration: none; }
+    .project-links a { color: #c6ffd4; margin-right: 1.2rem; font-size: 0.85rem; text-decoration: none; border-bottom: 1px dashed #5eff8e; pointer-events: auto; }
+    .exp-log { background: rgba(3, 17, 8, 0.6); backdrop-filter: blur(6px); border-radius: 24px; padding: 1.5rem; margin-bottom: 1.2rem; border-left: 6px solid #3eff6e; pointer-events: auto; }
+    .certs-chip { display: flex; flex-wrap: wrap; gap: 1rem; pointer-events: auto; }
+    .certs-chip span { background: rgba(15, 47, 26, 0.7); backdrop-filter: blur(4px); padding: 0.4rem 1.2rem; border-radius: 30px; font-family: monospace; font-size: 0.8rem; border: 1px solid #3eff6e55; pointer-events: auto; }
+    .btn-neon { background: rgba(15, 42, 26, 0.7); backdrop-filter: blur(4px); border: 1px solid #5eff8e; padding: 0.6rem 1.4rem; border-radius: 60px; color: #e0ffe6; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; text-decoration: none; pointer-events: auto; }
     .btn-neon:hover { background: #3eff6e; color: #031407; box-shadow: 0 0 15px #3eff6e; }
-    .back-top { position: fixed; bottom: 1.8rem; right: 1.8rem; background: rgba(31, 58, 40, 0.7); backdrop-filter: blur(8px); border: 1px solid #7effa3; border-radius: 50%; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; z-index: 99; color: #8effaa; text-decoration: none; }
-    @media (max-width: 780px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } .profile-pic { margin: 0 auto; } .stats-grid { flex-direction: column; align-items: center; } .hero-title { font-size: 2.4rem; } .container { padding: 1rem; } }
+    .back-top { position: fixed; bottom: 1.8rem; right: 1.8rem; background: rgba(31, 58, 40, 0.7); backdrop-filter: blur(8px); border: 1px solid #7effa3; border-radius: 50%; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; z-index: 100; color: #8effaa; text-decoration: none; pointer-events: auto; }
+    @media (max-width: 780px) { 
+      .hero-grid { grid-template-columns: 1fr; text-align: center; } 
+      .profile-pic { margin: 0 auto; } 
+      .stats-grid { flex-direction: column; align-items: center; } 
+      .hero-title { font-size: 2.4rem; } 
+      .container { padding: 1rem; }
+      .bulb-wrapper { top: 10px; right: 10px; }
+      .bulb-btn { width: 38px; height: 38px; }
+      .bulb-tooltip { font-size: 0.6rem; padding: 8px 14px; }
+    }
     .blinking-cursor { display: inline-block; width: 8px; height: 18px; background-color: #6eff9e; vertical-align: middle; margin-left: 4px; animation: blink 1s infinite; }
     @keyframes blink { 0%,100%{ opacity: 1; } 50%{ opacity: 0; } }
   </style>
@@ -75,6 +226,18 @@
 <body>
 
 <canvas id="nn-canvas"></canvas>
+
+<!-- Bulb button with tooltip -->
+<div class="bulb-wrapper">
+  <div class="bulb-btn">
+    <i class="fas fa-lightbulb"></i>
+  </div>
+  <div class="bulb-tooltip">
+    <i class="fas fa-mouse-pointer" style="color: #6eff8e; margin-right: 6px;"></i>
+    <span>✧ COLLECT DOTS</span> &nbsp;|&nbsp; 
+    <span>⚡ CLICK FOR BIG BANG</span>
+  </div>
+</div>
 
 <div class="container">
   <div class="navbar">
@@ -143,12 +306,6 @@
 <a href="#" class="back-top"><i class="fas fa-arrow-up"></i></a>
 
 <script>
-  // ============================================================
-  // FIXED NEURAL NETWORK: 
-  // LEFT CLICK + DRAG + HOVER = ATTRACTION
-  // LEFT CLICK ON DOT = 5x FASTER MASSIVE BIG BANG
-  // NO CORNER STICKING - SMOOTH BOUNCE + WRAP AROUND
-  // ============================================================
   const canvas = document.getElementById('nn-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
@@ -157,30 +314,38 @@
   let leftDragActive = false;
   let explosionParticles = [];
 
-  window.addEventListener('mousemove', (e) => { 
-    mouseX = e.clientX; 
-    mouseY = e.clientY; 
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
   });
-  window.addEventListener('mouseleave', () => { leftDragActive = false; });
   
-  // LEFT DRAG DETECTION - Attraction while holding left button
-  canvas.addEventListener('mousedown', (e) => { 
-    if (e.button === 0) { 
-      leftDragActive = true; 
-      e.preventDefault(); 
-    } 
+  canvas.addEventListener('mouseleave', () => {
+    leftDragActive = false;
+    mouseX = -1000;
+    mouseY = -1000;
   });
-  window.addEventListener('mouseup', (e) => { 
-    if (e.button === 0) leftDragActive = false; 
+  
+  canvas.addEventListener('mousedown', (e) => {
+    if (e.button === 0) {
+      leftDragActive = true;
+      e.preventDefault();
+    }
   });
+  
+  window.addEventListener('mouseup', (e) => {
+    if (e.button === 0) {
+      leftDragActive = false;
+    }
+  });
+  
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
-  function resizeCanvas() { 
-    width = window.innerWidth; 
-    height = window.innerHeight; 
-    canvas.width = width; 
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
     canvas.height = height;
-    // reposition neurons on resize to avoid clustering
     if (neurons.length) {
       neurons.forEach(n => {
         if (n.x > width) n.x = width - 10;
@@ -194,87 +359,89 @@
   const NEURON_COUNT = 220;
 
   class Neuron {
-    constructor() { this.reset(); this.pulse = 0; this.exploding = false; this.explodeTimer = 0; }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
-      this.radius = Math.random() * 2.5 + 1.2;
-      this.baseBright = Math.random() * 0.55 + 0.3;
+    constructor() {
+      this.reset();
+      this.pulse = 0;
       this.exploding = false;
       this.explodeTimer = 0;
     }
+    
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.radius = Math.random() * 2.5 + 1.5;
+      this.baseBright = Math.random() * 0.55 + 0.35;
+      this.exploding = false;
+      this.explodeTimer = 0;
+    }
+    
     update() {
       if (this.exploding) {
         this.explodeTimer--;
         this.x += this.vx;
         this.y += this.vy;
-        if (this.explodeTimer <= 0 || this.x < -600 || this.x > width+600 || this.y < -600 || this.y > height+600) {
+        if (this.explodeTimer <= 0 || this.x < -500 || this.x > width + 500 || this.y < -500 || this.y > height + 500) {
           this.reset();
         }
         return;
       }
       
       let forceX = 0, forceY = 0;
-      // ATTRACTION when left button is held AND mouse is moving over canvas
-      if (leftDragActive && mouseX > 0 && mouseY > 0 && mouseX < width && mouseY < height) {
+      
+      if (leftDragActive && mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const dist = Math.hypot(dx, dy);
-        if (dist < 200) {
-          // Stronger attraction the closer they get
-          const strength = (1 - Math.min(1, dist / 200)) * 1.8;
+        if (dist < 250) {
+          const strength = (1 - Math.min(1, dist / 250)) * 2.5;
           const angle = Math.atan2(dy, dx);
           forceX += Math.cos(angle) * strength;
           forceY += Math.sin(angle) * strength;
-          // Pulse effect when near cursor
-          if (dist < 60 && Math.random() < 0.2) this.pulse = 0.9;
+          if (dist < 70 && Math.random() < 0.15) this.pulse = 1.0;
         }
       }
       
-      // Apply forces and add natural random drift
-      this.vx += forceX * 0.25;
-      this.vy += forceY * 0.25;
-      // Damping to prevent infinite speed
+      this.vx += forceX * 0.28;
+      this.vy += forceY * 0.28;
       this.vx *= 0.98;
       this.vy *= 0.98;
-      // Add tiny random movement for organic feel
-      this.vx += (Math.random() - 0.5) * 0.05;
-      this.vy += (Math.random() - 0.5) * 0.05;
+      this.vx += (Math.random() - 0.5) * 0.06;
+      this.vy += (Math.random() - 0.5) * 0.06;
       
       this.x += this.vx;
       this.y += this.vy;
       
-      // WRAP AROUND - no corner sticking! Teleport to opposite side
-      if (this.x < -50) this.x = width + 50;
-      if (this.x > width + 50) this.x = -50;
-      if (this.y < -50) this.y = height + 50;
-      if (this.y > height + 50) this.y = -50;
+      if (this.x < -30) this.x = width + 30;
+      if (this.x > width + 30) this.x = -30;
+      if (this.y < -30) this.y = height + 30;
+      if (this.y > height + 30) this.y = -30;
       
-      if (this.pulse > 0) this.pulse -= 0.03;
+      if (this.pulse > 0) this.pulse -= 0.025;
     }
     
     draw() {
       if (this.exploding) {
         const intensity = Math.min(1.0, this.explodeTimer / 3);
-        ctx.beginPath(); 
-        ctx.arc(this.x, this.y, this.radius + 7, 0, Math.PI * 2);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius + 8, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 220, 70, ${intensity})`;
         ctx.fill();
-        ctx.beginPath(); 
+        ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 100, 40, ${intensity * 0.95})`;
         ctx.fill();
         return;
       }
       
-      let intensity = this.baseBright + (this.pulse * 0.85);
+      let intensity = this.baseBright + (this.pulse * 0.9);
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(70, 255, 120, ${Math.min(intensity, 0.95)})`;
       ctx.fill();
-      if (this.pulse > 0.15) {
+      
+      if (this.pulse > 0.2) {
         ctx.shadowBlur = 12;
         ctx.shadowColor = "#8effaa";
         ctx.fill();
@@ -282,34 +449,30 @@
       }
     }
     
-    // MASSIVE 5x FASTER BIG BANG
-    triggerMassiveBang() {
+    explode() {
       if (this.exploding) return;
       this.exploding = true;
-      this.explodeTimer = 3; // Super fast explosion
+      this.explodeTimer = 3;
       const angle = Math.random() * Math.PI * 2;
-      const speed = 70 + Math.random() * 50; // Extremely fast
+      const speed = 85 + Math.random() * 55;
       this.vx = Math.cos(angle) * speed;
       this.vy = Math.sin(angle) * speed;
       this.pulse = 1.2;
     }
   }
 
-  // Initialize neurons
   for (let i = 0; i < NEURON_COUNT; i++) {
     neurons.push(new Neuron());
   }
 
-  // LEFT CLICK ON DOT = MASSIVE BIG BANG
   canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const clickX = (e.clientX - rect.left) * scaleX;
-    const clickY = (e.clientY - rect.top) * scaleY;
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
     
     let closest = null;
     let minDist = 30;
+    
     for (let n of neurons) {
       if (n.exploding) continue;
       const dist = Math.hypot(n.x - clickX, n.y - clickY);
@@ -320,10 +483,8 @@
     }
     
     if (closest) {
-      // Trigger massive bang on clicked neuron
-      closest.triggerMassiveBang();
+      closest.explode();
       
-      // Chain reaction - all neurons within 150px explode
       for (let n of neurons) {
         if (n !== closest && !n.exploding) {
           const distToCenter = Math.hypot(n.x - closest.x, n.y - closest.y);
@@ -331,7 +492,7 @@
             n.exploding = true;
             n.explodeTimer = 3;
             const angle = Math.atan2(n.y - closest.y, n.x - closest.x);
-            const speed = 60 + Math.random() * 40;
+            const speed = 65 + Math.random() * 45;
             n.vx = Math.cos(angle) * speed + (Math.random() - 0.5) * 15;
             n.vy = Math.sin(angle) * speed + (Math.random() - 0.5) * 15;
             n.pulse = 1.2;
@@ -339,14 +500,13 @@
         }
       }
       
-      // Add explosion particles
-      for (let i = 0; i < 120; i++) {
+      for (let i = 0; i < 130; i++) {
         const ang = Math.random() * Math.PI * 2;
         explosionParticles.push({
           x: closest.x,
           y: closest.y,
-          vx: Math.cos(ang) * (30 + Math.random() * 35),
-          vy: Math.sin(ang) * (30 + Math.random() * 35),
+          vx: Math.cos(ang) * (32 + Math.random() * 38),
+          vy: Math.sin(ang) * (32 + Math.random() * 38),
           life: 12,
           size: Math.random() * 4 + 2
         });
@@ -354,7 +514,6 @@
     }
   });
 
-  // Draw neural connections
   function drawNeuralWeb() {
     for (let i = 0; i < neurons.length; i++) {
       if (neurons[i].exploding) continue;
@@ -368,9 +527,10 @@
           ctx.moveTo(neurons[i].x, neurons[i].y);
           ctx.lineTo(neurons[j].x, neurons[j].y);
           let opacity = 0.12 * (1 - dist / 110);
-          // Highlight connections near mouse during drag
           if (leftDragActive && mouseX > 0) {
-            const distToCursor = Math.hypot((neurons[i].x + neurons[j].x)/2 - mouseX, (neurons[i].y + neurons[j].y)/2 - mouseY);
+            const midX = (neurons[i].x + neurons[j].x) / 2;
+            const midY = (neurons[i].y + neurons[j].y) / 2;
+            const distToCursor = Math.hypot(midX - mouseX, midY - mouseY);
             if (distToCursor < 150) opacity += 0.12;
           }
           if (neurons[i].pulse > 0.2 || neurons[j].pulse > 0.2) opacity += 0.12;
@@ -382,7 +542,6 @@
     }
   }
 
-  // Update explosion particles
   function updateExplosions() {
     for (let i = explosionParticles.length - 1; i >= 0; i--) {
       const p = explosionParticles[i];
@@ -399,9 +558,8 @@
     }
   }
 
-  // Draw attraction field indicator
   function drawDragIndicator() {
-    if (leftDragActive && mouseX > 0 && mouseY > 0 && mouseX < width && mouseY < height) {
+    if (leftDragActive && mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 100, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(62, 255, 110, 0.08)';
@@ -411,7 +569,6 @@
       ctx.strokeStyle = 'rgba(100, 255, 140, 0.3)';
       ctx.lineWidth = 2;
       ctx.stroke();
-      // Inner glow
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 45, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(80, 255, 130, 0.12)';
@@ -419,7 +576,6 @@
     }
   }
 
-  // Animation loop
   function animate() {
     const grad = ctx.createLinearGradient(0, 0, width, height);
     grad.addColorStop(0, '#021a0c');
@@ -440,12 +596,10 @@
   
   animate();
 
-  // Periodic neural pulses for ambiance
   setInterval(() => {
     if (neurons.length) {
       const randomNeuron = neurons[Math.floor(Math.random() * neurons.length)];
       if (!randomNeuron.exploding) randomNeuron.pulse = 0.9;
-      // Cascade effect
       for (let n of neurons) {
         if (!n.exploding && Math.hypot(randomNeuron.x - n.x, randomNeuron.y - n.y) < 90 && Math.random() < 0.4) {
           n.pulse = 0.7;
@@ -454,9 +608,6 @@
     }
   }, 900);
 
-  // ============================================================
-  // SCROLL ANIMATIONS - RE-TRIGGER ON EVERY SCROLL
-  // ============================================================
   const animatedElements = document.querySelectorAll('.animate-on-scroll');
   
   function checkAndAnimate() {
@@ -465,7 +616,6 @@
       const isVisible = rect.top < window.innerHeight - 80 && rect.bottom > 50;
       if (isVisible) {
         el.classList.add('visible');
-        // Trigger skill bar fill
         const fillBar = el.querySelector('.level-fill-nn');
         if (fillBar && fillBar.getAttribute('data-width') && (!fillBar.style.width || fillBar.style.width === '0%')) {
           fillBar.style.width = fillBar.getAttribute('data-width') + '%';
@@ -480,7 +630,6 @@
   window.addEventListener('scroll', () => requestAnimationFrame(checkAndAnimate));
   window.addEventListener('resize', () => requestAnimationFrame(checkAndAnimate));
   
-  // Skill bar observer
   const skillBars = document.querySelectorAll('.level-fill-nn');
   const barObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -494,7 +643,6 @@
   }, { threshold: 0.3 });
   skillBars.forEach(bar => barObserver.observe(bar));
 
-  // Typing animation
   const roles = ["LangChain · RAG · GCP", "92% accuracy · &lt;200ms", "Docker · K8s · MLOps", "PyTorch · TensorFlow · OpenCV"];
   let roleIdx = 0, charI = 0, deleting = false;
   const typeSpan = document.getElementById('typing-ai');
