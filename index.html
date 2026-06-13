@@ -2,875 +2,518 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dhananjay Mandlapure · futuristic dev</title>
-  <!-- Font & icons -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Dhananjay Mandlapure · Neural Singularity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+    body { background: #030b06; color: #d0ffd8; font-family: 'Inter', 'Space Mono', monospace; line-height: 1.5; scroll-behavior: smooth; overflow-x: hidden; }
+    #nn-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; background: radial-gradient(circle at 20% 30%, #011a0a, #000000); cursor: crosshair; }
+    .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem 2rem; position: relative; z-index: 5; }
+    
+    /* Animation classes */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
     }
-
-    body {
-      background: #0a1a0f;
-      color: #d4e8d0;
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-
-    #particles-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1.5rem 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .glow-text {
-      text-shadow: 0 0 12px rgba(34, 197, 94, 0.25), 0 0 30px rgba(34, 197, 94, 0.12);
-    }
-
-    .glass-card {
-      background: rgba(10, 30, 18, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(34, 197, 94, 0.15);
-      border-radius: 32px;
-      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-      transition: all 0.3s ease;
-    }
-
-    .glass-card:hover {
-      border-color: #22c55e;
-      box-shadow: 0 0 40px rgba(34, 197, 94, 0.2), 0 20px 48px -12px #000;
-      transform: translateY(-5px);
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 0.5rem 0 1.5rem 0;
-    }
-
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #86efac, #22c55e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .nav-links a {
-      color: #b0d4b0;
-      margin-left: 2rem;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: 0.2s;
-      border-bottom: 2px solid transparent;
-      padding-bottom: 4px;
-    }
-
-    .nav-links a:hover {
-      color: #86efac;
-      border-bottom-color: #22c55e;
-    }
-
-    .hero {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2.5rem;
-      padding: 1.5rem 0 3rem 0;
-    }
-
-    .hero-content {
-      flex: 1 1 280px;
-    }
-
-    .hero-content h1 {
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-
-    .hero-content .tagline {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #86efac;
-      margin: 0.5rem 0 1rem;
-    }
-
-    .hero-content p {
-      color: #b0d4b0;
-      max-width: 500px;
-      font-size: 1.1rem;
-    }
-
-    .hero-image {
-      flex: 0 0 220px;
-      text-align: center;
-    }
-
-    .hero-image img {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: top center;
-      border: 3px solid rgba(34, 197, 94, 0.45);
-      box-shadow: 0 0 40px rgba(34, 197, 94, 0.25);
-      transition: 0.25s;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .hero-image img:hover {
-      transform: scale(1.02);
-      border-color: #22c55e;
-      box-shadow: 0 0 60px #22c55e;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #1a2e1f;
-      color: #d4e8d0;
-      padding: 0.75rem 2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      text-decoration: none;
-      border: 1px solid #22c55e;
-      transition: 0.2s;
-      margin-right: 0.8rem;
-      margin-top: 1.2rem;
-      backdrop-filter: blur(4px);
-    }
-
-    .btn-primary {
-      background: #22c55e;
-      border: 1px solid #22c55e;
-      color: #0a1a0f;
-    }
-
-    .btn-primary:hover {
-      background: #4ade80;
-      box-shadow: 0 0 25px #22c55e;
-      transform: scale(1.02);
-    }
-
-    .btn-outline:hover {
-      background: rgba(34, 197, 94, 0.15);
-      border-color: #4ade80;
-      transform: scale(1.02);
-    }
-
-    .stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem 3rem;
-      justify-content: space-around;
-      padding: 1.8rem 0;
-      margin: 1.5rem 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 2.6rem;
-      font-weight: 800;
-      color: #86efac;
-      text-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
-    }
-
-    .stat-label {
-      color: #8fae8f;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .gate-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: linear-gradient(135deg, #fbbf24, #d97706);
-      padding: 0.4rem 1.2rem;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #0a1a0f;
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
-      margin-top: 0.8rem;
-      border: 1px solid rgba(255, 215, 0, 0.2);
-    }
-
-    .gate-badge i {
-      color: #0a1a0f;
-    }
-
-    .section-title {
-      font-size: 2.4rem;
-      font-weight: 700;
-      margin: 2.8rem 0 1.8rem 0;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #d4e8d0, #86efac);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-title i {
-      color: #22c55e;
-      -webkit-text-fill-color: #22c55e;
-      background: none;
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .skill-item {
-      background: rgba(10, 30, 18, 0.6);
-      backdrop-filter: blur(4px);
-      padding: 1rem 1.2rem;
-      border-radius: 60px;
-      border: 1px solid rgba(34, 197, 94, 0.08);
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .skill-item:hover {
-      border-color: #22c55e;
-      background: #0f2a1a;
-      transform: translateY(-3px);
-    }
-
-    .skill-name {
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: #b0d4b0;
-    }
-
-    .skill-bar-bg {
-      flex: 1;
-      height: 6px;
-      background: #1a2e1f;
-      border-radius: 10px;
-      min-width: 60px;
-    }
-
-    .skill-bar-fill {
-      height: 6px;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #22c55e, #86efac);
-      width: 0%;
-      transition: width 0.6s ease;
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-
-    .project-card {
-      padding: 2rem 1.5rem;
-      border-radius: 32px;
-      background: rgba(10, 26, 16, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(34, 197, 94, 0.08);
-      transition: 0.25s;
-    }
-
-    .project-card:hover {
-      border-color: #22c55e;
-      background: rgba(14, 34, 20, 0.85);
-    }
-
-    .project-card h3 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
-      color: #d4e8d0;
-    }
-
-    .project-card .sub {
-      color: #86efac;
-      font-weight: 500;
-      font-size: 0.9rem;
-      letter-spacing: 0.3px;
-      margin-bottom: 0.8rem;
-    }
-
-    .project-card p {
-      color: #b0d4b0;
-      font-size: 0.95rem;
-    }
-
-    .project-card .metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem 1.5rem;
-      margin: 1rem 0 1.2rem;
-      font-size: 0.9rem;
-      color: #8fae8f;
-    }
-
-    .project-card .metrics span i {
-      color: #22c55e;
-      margin-right: 4px;
-    }
-
-    .project-links a {
-      color: #b0d4b0;
-      margin-right: 1.2rem;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: 0.15s;
-      display: inline-block;
-    }
-
-    .project-links a:hover {
-      color: #86efac;
-      transform: translateY(-2px);
-    }
-
-    .project-links i {
-      margin-right: 4px;
-    }
-
-    .exp-item {
-      padding: 1.8rem 2rem;
-      margin-bottom: 1.2rem;
-      border-radius: 28px;
-    }
-
-    .exp-item .title {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-
-    .exp-item .company {
-      color: #86efac;
-      font-weight: 500;
-    }
-
-    .exp-item .date {
-      color: #8fae8f;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .exp-item ul {
-      list-style: none;
-      margin-top: 0.5rem;
-    }
-
-    .exp-item ul li {
-      padding: 0.2rem 0;
-      color: #b0d4b0;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .exp-item ul li i {
-      color: #22c55e;
-      font-size: 0.6rem;
-    }
-
-    .certs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem 1.5rem;
-      padding: 0.8rem 0;
-    }
-
-    .certs span {
-      background: rgba(10, 30, 18, 0.6);
-      padding: 0.5rem 1.4rem;
-      border-radius: 60px;
-      border: 1px solid #1a3a22;
-      font-size: 0.9rem;
-      backdrop-filter: blur(2px);
-    }
-
-    .back-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: #1a2e1f;
-      color: #86efac;
-      width: 48px;
-      height: 48px;
-      border-radius: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #22c55e;
-      text-decoration: none;
-      font-size: 1.3rem;
-      transition: 0.2s;
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    }
-
-    .back-top:hover {
-      background: #22c55e;
-      color: #0a1a0f;
-      transform: scale(1.05);
-      box-shadow: 0 0 30px #22c55e;
-    }
-
-    .type-cursor {
-      display: inline-block;
-      width: 3px;
-      height: 1.2em;
-      background: #86efac;
-      margin-left: 2px;
-      vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    @media (max-width: 640px) {
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-      }
-      .nav-links a {
-        margin-left: 0;
-        margin-right: 1.5rem;
-      }
-      .hero {
-        flex-direction: column-reverse;
-        text-align: center;
-      }
-      .hero-content h1 {
-        font-size: 2.6rem;
-      }
-      .hero-content p {
-        margin: 0 auto;
-      }
-      .hero-image {
-        flex: 0 0 180px;
-      }
-      .hero-image img {
-        width: 160px;
-        height: 160px;
-      }
-      .back-top {
-        bottom: 1rem;
-        right: 1rem;
-        width: 42px;
-        height: 42px;
-        font-size: 1rem;
-      }
-    }
+    .section-head.animate-on-scroll { transform: translateX(-20px); }
+    .section-head.animate-on-scroll.visible { transform: translateX(0); }
+    .skill-node.animate-on-scroll { transform: scale(0.95); }
+    .skill-node.animate-on-scroll.visible { transform: scale(1); }
+    .certs-chip span.animate-on-scroll { transform: scale(0.9); }
+    .certs-chip span.animate-on-scroll.visible { transform: scale(1); }
+    
+    .glass-card:hover, .nn-card:hover { border-color: #4eff6e; box-shadow: 0 0 22px rgba(78, 255, 110, 0.18); background: rgba(0, 20, 6, 0.45); }
+    .navbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 0.6rem 0.2rem 1rem 0.2rem; border-bottom: 1px solid rgba(78, 255, 110, 0.45); margin-bottom: 1.5rem; }
+    .logo { font-family: 'Space Mono', monospace; font-size: 1.45rem; font-weight: 700; background: linear-gradient(135deg, #b4ffb0, #3eff72); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .logo i { background: none; -webkit-text-fill-color: #3eff6e; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: #caffda; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid transparent; transition: 0.2s; }
+    .nav-links a:hover { color: #8effaa; border-bottom-color: #3eff6e; text-shadow: 0 0 4px #2eff6e; }
+    .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 2.5rem; align-items: center; margin: 1rem 0 2rem; }
+    .terminal-block { background: rgba(0, 20, 5, 0.45); backdrop-filter: blur(12px); border-left: 5px solid #3eff6e; border-radius: 28px; padding: 2rem; }
+    .prompt-line { font-family: 'Space Mono', monospace; font-size: 0.95rem; color: #bbffcc; margin: 0.4rem 0; }
+    .symbol { color: #6eff8e; font-weight: bold; }
+    .hero-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #e3ffe6, #7effa3); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0.4rem 0; }
+    .gate-badge-nn { background: linear-gradient(135deg, #f5b042, #d98e04); display: inline-flex; align-items: center; gap: 8px; padding: 0.3rem 1.2rem; border-radius: 40px; font-weight: bold; color: #031e0a; font-size: 0.8rem; margin-top: 10px; }
+    .profile-pic { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; border: 2px solid #4eff6e; box-shadow: 0 0 28px rgba(62, 255, 110, 0.5); background: #0a2a12; transition: 0.25s; }
+    .stats-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; background: rgba(0, 18, 6, 0.45); backdrop-filter: blur(12px); border-radius: 48px; padding: 1rem 2rem; margin: 2rem 0; border: 1px solid rgba(62, 255, 110, 0.35); }
+    .stat-cell { text-align: center; font-family: 'Space Mono', monospace; }
+    .stat-number { font-size: 1.8rem; font-weight: 800; color: #88ffaa; }
+    .section-head { display: flex; align-items: baseline; gap: 12px; margin: 3rem 0 1.5rem 0; border-left: 5px solid #3eff6e; padding-left: 1rem; }
+    .section-head h2 { font-size: 1.8rem; font-weight: 700; font-family: 'Space Mono', monospace; }
+    .section-head i { color: #6eff8e; font-size: 1.6rem; }
+    .skills-neural { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+    .skill-node { background: rgba(11, 36, 18, 0.7); backdrop-filter: blur(4px); border-radius: 60px; padding: 0.7rem 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px solid rgba(47, 120, 64, 0.6); transition: 0.2s; }
+    .skill-node:hover { border-color: #6eff9e; transform: translateX(6px) scale(1.02); background: rgba(17, 51, 28, 0.9); }
+    .skill-name { font-weight: 600; font-size: 0.9rem; }
+    .level-bar-nn { width: 100px; height: 6px; background: #1e4226; border-radius: 10px; overflow: hidden; }
+    .level-fill-nn { width: 0%; height: 100%; background: linear-gradient(90deg, #3eff6e, #b0ffb0); border-radius: 10px; transition: width 0.8s ease; }
+    .projects-matrix { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+    .nn-card { background: rgba(2, 20, 6, 0.5); backdrop-filter: blur(8px); border-radius: 32px; padding: 1.8rem; border: 1px solid rgba(62, 255, 110, 0.3); transition: 0.25s; }
+    .nn-card:hover { border-color: #6eff8e; transform: translateY(-6px); background: rgba(6, 32, 14, 0.7); }
+    .nn-card h3 { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .metrics-badge { display: flex; gap: 1rem; margin: 0.8rem 0; font-size: 0.75rem; color: #bbffcc; }
+    .project-links a { color: #c6ffd4; margin-right: 1.2rem; font-size: 0.85rem; text-decoration: none; border-bottom: 1px dashed #5eff8e; }
+    .exp-log { background: rgba(3, 17, 8, 0.6); backdrop-filter: blur(6px); border-radius: 24px; padding: 1.5rem; margin-bottom: 1.2rem; border-left: 6px solid #3eff6e; }
+    .certs-chip { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .certs-chip span { background: rgba(15, 47, 26, 0.7); backdrop-filter: blur(4px); padding: 0.4rem 1.2rem; border-radius: 30px; font-family: monospace; font-size: 0.8rem; border: 1px solid #3eff6e55; }
+    .btn-neon { background: rgba(15, 42, 26, 0.7); backdrop-filter: blur(4px); border: 1px solid #5eff8e; padding: 0.6rem 1.4rem; border-radius: 60px; color: #e0ffe6; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; text-decoration: none; }
+    .btn-neon:hover { background: #3eff6e; color: #031407; box-shadow: 0 0 15px #3eff6e; }
+    .back-top { position: fixed; bottom: 1.8rem; right: 1.8rem; background: rgba(31, 58, 40, 0.7); backdrop-filter: blur(8px); border: 1px solid #7effa3; border-radius: 50%; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; z-index: 99; color: #8effaa; text-decoration: none; }
+    @media (max-width: 780px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } .profile-pic { margin: 0 auto; } .stats-grid { flex-direction: column; align-items: center; } .hero-title { font-size: 2.4rem; } .container { padding: 1rem; } }
+    .blinking-cursor { display: inline-block; width: 8px; height: 18px; background-color: #6eff9e; vertical-align: middle; margin-left: 4px; animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{ opacity: 1; } 50%{ opacity: 0; } }
   </style>
 </head>
 <body>
 
-<canvas id="particles-canvas"></canvas>
+<canvas id="nn-canvas"></canvas>
 
 <div class="container">
-
-  <nav class="navbar">
-    <span class="logo"><i class="fas fa-code" style="background:transparent; -webkit-text-fill-color:#22c55e; margin-right:6px;"></i> Dhananjay</span>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#experience">Experience</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-content">
-      <h1 class="glow-text">Dhananjay Mandlapure</h1>
-      <div class="tagline">
-        <i class="fas fa-robot" style="margin-right:8px;"></i> 
-        <span id="typed-text">AI Engineer · Full‑Stack · MLOps</span><span class="type-cursor"></span>
-      </div>
-      <p>Building intelligent systems with <strong>LangChain, RAG, CNN</strong> and real‑time deployment. <br /> 92% accuracy · &lt;200ms latency · Docker · GCP</p>
-      <div class="gate-badge">
-        <i class="fas fa-trophy"></i> GATE 2026 · Rank 3000
-      </div>
-      <div>
-        <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank" class="btn btn-primary"><i class="fas fa-file-alt" style="margin-right:8px;"></i> Resume PDF</a>
-        <a href="https://github.com/matrix0777" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
-        <a href="https://www.linkedin.com/in/dhananjay-mandlapure-642963240/" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
-      </div>
-    </div>
-    <div class="hero-image">
-      <img src="https://raw.githubusercontent.com/matrix0777/Dhananjay.github.io/main/profile.jpeg" alt="Dhananjay Mandlapure" />
-    </div>
-  </section>
-
-  <div class="stats">
-    <div class="stat-item"><div class="stat-number">92%</div><div class="stat-label">Accuracy (CleanText)</div></div>
-    <div class="stat-item"><div class="stat-number">50k+</div><div class="stat-label">Tweets trained</div></div>
-    <div class="stat-item"><div class="stat-number">&lt;200ms</div><div class="stat-label">Latency</div></div>
-    <div class="stat-item"><div class="stat-number">2k+</div><div class="stat-label">CT scans (ChestCare)</div></div>
-    <div class="stat-item"><div class="stat-number">#3000</div><div class="stat-label">GATE 2026</div></div>
+  <div class="navbar">
+    <div class="logo"><i class="fas fa-microchip"></i> Dhananjay Mandlapure</div>
+    <div class="nav-links"><a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a></div>
   </div>
 
-  <!-- ===== ABOUT ME ===== -->
-  <section id="about">
-    <h2 class="section-title"><i class="fas fa-user"></i> about me</h2>
-    <div class="glass-card" style="padding: 2rem;">
-      <p style="font-size: 1.1rem; line-height: 1.8;">
-        I'm a passionate <strong>AI Engineer</strong> and <strong>Full-Stack Developer</strong> with a deep interest in 
-        <strong>Natural Language Processing</strong>, <strong>Computer Vision</strong>, and <strong>MLOps</strong>. 
-        Currently pursuing my B.Tech in Artificial Intelligence and Data Science at AISSMS Institute of Information Technology, Pune.
-      </p>
-      <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
-        I love building end-to-end AI solutions — from data preprocessing and model training to deployment using 
-        <strong>Docker</strong>, <strong>Kubernetes</strong>, and <strong>CI/CD pipelines</strong>. 
-        I've worked on <strong>RAG-based chatbots</strong>, <strong>medical imaging AI</strong>, and <strong>agentic applications</strong>.
-      </p>
-      <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
-        I'm also a <strong>GATE 2026 qualifier</strong> with an All India Rank of <strong>3000</strong>. 
-        I'm always excited to learn new technologies and collaborate on innovative projects.
-      </p>
-    </div>
-  </section>
-
-  <section id="skills">
-    <h2 class="section-title"><i class="fas fa-cogs"></i> technical arsenal</h2>
-    <div class="skills-grid" id="skillGrid">
-      <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="90"></div></div></div>
-      <div class="skill-item"><span class="skill-name">C / C++</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
-      <div class="skill-item"><span class="skill-name">React / Next.js</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
-      <div class="skill-item"><span class="skill-name">TensorFlow</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="88"></div></div></div>
-      <div class="skill-item"><span class="skill-name">LangChain / RAG</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="80"></div></div></div>
-      <div class="skill-item"><span class="skill-name">Docker / K8s</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="75"></div></div></div>
-      <div class="skill-item"><span class="skill-name">FastAPI / Flask</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="82"></div></div></div>
-      <div class="skill-item"><span class="skill-name">PyTorch</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="80"></div></div></div>
-      <div class="skill-item"><span class="skill-name">Scikit-learn</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85"></div></div></div>
-      <div class="skill-item"><span class="skill-name">SQL / MongoDB</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="78"></div></div></div>
-      <div class="skill-item"><span class="skill-name">Google Cloud</span><div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="70"></div></div></div>
-    </div>
-  </section>
-
-  <section id="projects">
-    <h2 class="section-title"><i class="fas fa-project-diagram"></i> flagship projects</h2>
-    <div class="projects-grid">
-
-      <!-- CleanText AI -->
-      <div class="project-card glass-card">
-        <h3>CleanText AI</h3>
-        <div class="sub"><i class="fas fa-shield-alt"></i> NLP · 92% acc · &lt;200ms</div>
-        <p>Real‑time abusive language detection on 50k+ tweets. Deployed scalable solution on GCP.</p>
-        <div class="metrics">
-          <span><i class="fas fa-check-circle"></i> 92% acc</span>
-          <span><i class="fas fa-bolt"></i> &lt;200ms latency</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/matrix0777/NLP-proj1.git" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://cleantext-ai.vercel.app" target="_blank"><i class="fas fa-play"></i> live demo</a>
-        </div>
-      </div>
-
-      <!-- ChestCare AI (Medical LLM) -->
-      <div class="project-card glass-card">
-        <h3>ChestCare AI</h3>
-        <div class="sub"><i class="fas fa-heartbeat"></i> Medical LLM · CT Scan</div>
-        <p>CT‑scan cancer detection using Medical LLM. 87% sensitivity, 82% specificity, early diagnostic support.</p>
-        <div class="metrics">
-          <span><i class="fas fa-eye"></i> 87% sens.</span>
-          <span><i class="fas fa-bullseye"></i> 82% spec.</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/matrix0777/Medical-llm.git" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://chestcare-ai.streamlit.app" target="_blank"><i class="fas fa-flask"></i> demo</a>
-        </div>
-      </div>
-
-      <!-- RAG Application (Bajaj) -->
-      <div class="project-card glass-card">
-        <h3>RAG Insurance Bot</h3>
-        <div class="sub"><i class="fas fa-robot"></i> LangChain · FAISS · GCP</div>
-        <p>RAG‑based insurance chatbot, semantic search + prompt engineering. Cut policy review time by 40%.</p>
-        <div class="metrics">
-          <span><i class="fas fa-chart-line"></i> +25% accuracy</span>
-          <span><i class="fas fa-clock"></i> -40% review</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/matrix0777/Bajaj.git" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://rag-insurance-bot.vercel.app" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
-        </div>
-      </div>
-
-      <!-- Agentic Application -->
-      <div class="project-card glass-card">
-        <h3>Agentic AI</h3>
-        <div class="sub"><i class="fas fa-brain"></i> LangGraph · CrewAI · Agents</div>
-        <p>Agentic application using LangGraph and CrewAI for autonomous task execution and multi-agent collaboration.</p>
-        <div class="metrics">
-          <span><i class="fas fa-code-branch"></i> Multi-Agent</span>
-          <span><i class="fas fa-bolt"></i> Autonomous</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/matrix0777/Agents.git" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="#" target="_blank"><i class="fas fa-rocket"></i> live demo</a>
-        </div>
-      </div>
-
-      <!-- Story Generator -->
-      <div class="project-card glass-card">
-        <h3>Story‑Generator AI</h3>
-        <div class="sub"><i class="fas fa-pen-fancy"></i> N‑gram · Sherlock Holmes</div>
-        <p>Interactive story generator with 85% user satisfaction. Web app with prompt continuation.</p>
-        <div class="metrics">
-          <span><i class="fas fa-star"></i> 85% satisfaction</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/dhananjay-mandlapure/story-generator-ai" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://story-generator-ai.vercel.app" target="_blank"><i class="fas fa-book"></i> try it</a>
-        </div>
-      </div>
-
-      <!-- Image Generation -->
-      <div class="project-card glass-card">
-        <h3>Image Generation</h3>
-        <div class="sub"><i class="fas fa-image"></i> Dreamlike Diffusion · transfer</div>
-        <p>Text‑to‑image pipeline, 100+ images/day, +60% creative output over baseline GAN.</p>
-        <div class="metrics">
-          <span><i class="fas fa-rocket"></i> +60% output</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/dhananjay-mandlapure/image-gen-transfer" target="_blank"><i class="fab fa-github"></i> code</a>
-          <a href="https://image-gen-demo.vercel.app" target="_blank"><i class="fas fa-palette"></i> gallery</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="experience">
-    <h2 class="section-title"><i class="fas fa-briefcase"></i> experience</h2>
-    <div class="exp-item glass-card">
-      <div class="title">AI Intern (Freelance) <span class="company">· Remote</span></div>
-      <div class="date"><i class="far fa-calendar-alt"></i> Jan 2025 – May 2025</div>
-      <ul>
-        <li><i class="fas fa-circle"></i> RAG‑based insurance chatbot using LangChain, FAISS, LLMs</li>
-        <li><i class="fas fa-circle"></i> +25% response accuracy, -40% policy review time</li>
-        <li><i class="fas fa-circle"></i> Deployed on GCP with Docker + CI/CD pipelines</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="section-title"><i class="fas fa-certificate"></i> certifications</h2>
-    <div class="certs">
-      <span>Deep Learning Specialization · Coursera</span>
-      <span>Machine Learning · Coursera</span>
-      <span>SQL Database Management · Oracle</span>
-      <span>Data Analytics · Cisco Networking Academy</span>
-      <span>Data Science Certificate · Udemy</span>
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2 class="section-title"><i class="fas fa-envelope"></i> contact</h2>
-    <div class="glass-card" style="padding: 2rem; text-align: center;">
-      <p style="font-size: 1.1rem;">
-        <i class="fas fa-envelope" style="color:#22c55e; margin-right: 10px;"></i> 
-        <a href="mailto:mandlapured@gmail.com" style="color: #86efac; text-decoration: none;">mandlapured@gmail.com</a>
-      </p>
-      <p style="font-size: 1.1rem; margin-top: 0.5rem;">
-        <i class="fas fa-map-pin" style="color:#22c55e; margin-right: 10px;"></i> Pune, India
-      </p>
-      <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
-        <a href="https://github.com/matrix0777" target="_blank" style="color: #86efac; text-decoration: none; font-size: 1.2rem;">
-          <i class="fab fa-github"></i> GitHub
-        </a>
-        <a href="https://www.linkedin.com/in/dhananjay-mandlapure-642963240/" target="_blank" style="color: #86efac; text-decoration: none; font-size: 1.2rem;">
-          <i class="fab fa-linkedin"></i> LinkedIn
-        </a>
-        <a href="https://drive.google.com/file/d/your-resume-link-here/view" target="_blank" style="color: #86efac; text-decoration: none; font-size: 1.2rem;">
-          <i class="fas fa-file-pdf"></i> Resume
-        </a>
+  <div class="hero-grid">
+    <div class="terminal-block">
+      <div class="prompt-line"><span class="symbol">$</span> Dhananjay Mandlapure</div>
+      <div class="hero-title">AI Engineer · Full‑Stack · MLOps</div>
+      <div class="prompt-line"><span class="symbol">#</span> <span id="typing-ai">LangChain · RAG · GCP</span><span class="blinking-cursor"></span></div>
+      <div class="prompt-line"><span class="symbol">></span> 92% accuracy · &lt;200ms latency · Docker · GCP</div>
+      <div class="gate-badge-nn"><i class="fas fa-trophy"></i> GATE 2026 · Rank 3000</div>
+      <div style="margin-top: 1.2rem; display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="#" class="btn-neon"><i class="fas fa-file-alt"></i> Resume PDF</a>
+        <a href="https://github.com/matrix0777" target="_blank" class="btn-neon"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.linkedin.com/in/dhananjay-mandlapure-642963240/" target="_blank" class="btn-neon"><i class="fab fa-linkedin"></i> LinkedIn</a>
       </div>
     </div>
+    <div><img src="https://raw.githubusercontent.com/matrix0777/Dhananjay.github.io/main/profile.jpeg" alt="Dhananjay" class="profile-pic" onerror="this.src='https://ui-avatars.com/api/?background=0a2f0a&color=6eff6e&bold=true&name=Dhananjay+M';" /></div>
+  </div>
+
+  <div class="stats-grid animate-on-scroll"><div class="stat-cell"><div class="stat-number">92%</div><div>Accuracy (CleanText)</div></div><div class="stat-cell"><div class="stat-number">50k+</div><div>Tweets trained</div></div><div class="stat-cell"><div class="stat-number">&lt;200ms</div><div>Latency</div></div><div class="stat-cell"><div class="stat-number">2k+</div><div>CT scans</div></div><div class="stat-cell"><div class="stat-number">#3000</div><div>GATE 2026</div></div></div>
+
+  <section id="about"><div class="section-head animate-on-scroll"><i class="fas fa-user"></i><h2>about me</h2></div><div class="glass-card animate-on-scroll" style="padding: 2rem;"><p style="font-size: 1.1rem; line-height: 1.8;">I'm a passionate <strong>AI Engineer</strong> and <strong>Full-Stack Developer</strong> with deep expertise in <strong>Natural Language Processing</strong>, <strong>Computer Vision</strong>, and <strong>MLOps</strong>. Currently pursuing B.Tech in Artificial Intelligence and Data Science at AISSMS Institute of Information Technology, Pune.</p><p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">I build end-to-end AI solutions — from data preprocessing and model training to deployment using <strong>Docker</strong>, <strong>Kubernetes</strong>, and <strong>CI/CD pipelines</strong>. Expertise in <strong>RAG-based chatbots</strong>, <strong>medical imaging AI</strong>, and <strong>agentic applications</strong>.</p><p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;"><strong>GATE 2026 qualifier</strong> with All India Rank <strong>3000</strong>. Always excited to collaborate on innovative AI projects.</p></div></section>
+
+  <section id="skills"><div class="section-head animate-on-scroll"><i class="fas fa-cogs"></i><h2>technical arsenal</h2></div><div class="skills-neural" id="skillsContainer">
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🐍 Python (Advanced)</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="94"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">⚡ C / C++</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="88"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🧠 TensorFlow / Keras</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="90"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🔥 PyTorch / Lightning</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="85"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">📊 NumPy / Pandas / Matplotlib</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="92"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🤗 Transformers / Hugging Face</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="83"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🔗 LangChain / RAG / FAISS</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="86"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🖥️ Scikit-learn / XGBoost</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="89"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">⚡ FastAPI / Flask / Django</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="84"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🐳 Docker / Kubernetes</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="78"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">☁️ GCP / AWS / Vertex AI</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="76"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🛢️ SQL / MongoDB / ChromaDB</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="80"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🕸️ React / Next.js / Tailwind</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="82"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">🧪 OpenCV / Computer Vision</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="81"></div></div></div>
+    <div class="skill-node animate-on-scroll"><span class="skill-name">📈 MLflow / Kubeflow / CI/CD</span><div class="level-bar-nn"><div class="level-fill-nn" data-width="74"></div></div></div>
+  </div></section>
+
+  <section id="projects"><div class="section-head animate-on-scroll"><i class="fas fa-project-diagram"></i><h2>flagship projects</h2></div><div class="projects-matrix">
+    <div class="nn-card animate-on-scroll"><h3><i class="fas fa-shield-alt"></i> CleanText AI</h3><div class="metrics-badge"><span>🎯 92% acc</span> <span>⚡ &lt;200ms</span></div><p>Real‑time abusive language detection on 50k+ tweets. Deployed on GCP.</p><div class="project-links"><a href="#">code</a><a href="#">demo</a></div></div>
+    <div class="nn-card animate-on-scroll"><h3><i class="fas fa-heartbeat"></i> ChestCare AI</h3><div class="metrics-badge"><span>🩻 87% sens</span> <span>82% spec</span></div><p>CT cancer detection using Medical LLM + CNN ensemble.</p><div class="project-links"><a href="#">code</a><a href="#">demo</a></div></div>
+    <div class="nn-card animate-on-scroll"><h3><i class="fas fa-robot"></i> RAG Insurance Bot</h3><div class="metrics-badge"><span>📈 +25% acc</span> <span>⏱️ -40% review</span></div><p>LangChain + FAISS + Gemini, insurance Q&A system.</p><div class="project-links"><a href="#">code</a><a href="#">demo</a></div></div>
+    <div class="nn-card animate-on-scroll"><h3><i class="fas fa-brain"></i> Agentic AI</h3><div class="metrics-badge"><span>🧠 Multi-Agent</span> <span>⚡ Autonomous</span></div><p>LangGraph + CrewAI for autonomous task execution.</p><div class="project-links"><a href="#">code</a><a href="#">demo</a></div></div>
+    <div class="nn-card animate-on-scroll"><h3><i class="fas fa-pen-fancy"></i> StoryForge GPT</h3><div class="metrics-badge"><span>⭐ 85% sat</span></div><p>Interactive story generation with transformer models.</p><div class="project-links"><a href="#">code</a><a href="#">demo</a></div></div>
+    <div class="nn-card animate-on-scroll"><h3><i class="fas fa-palette"></i> NeuralCanvas</h3><div class="metrics-badge"><span>🎨 +60% output</span></div><p>Text-to-image diffusion pipeline, style transfer.</p><div class="project-links"><a href="#">code</a><a href="#">gallery</a></div></div>
+  </div></section>
+
+  <section id="experience"><div class="section-head animate-on-scroll"><i class="fas fa-briefcase"></i><h2>experience</h2></div>
+    <div class="exp-log animate-on-scroll"><div class="prompt-line"><span class="symbol">$</span> AI Intern (Freelance) · Remote <span style="float:right">Jan 2025 – May 2025</span></div><ul style="margin-top: 8px; padding-left: 1rem;"><li><i class="fas fa-circle" style="color:#6eff8e; font-size:0.5rem;"></i> RAG insurance chatbot: LangChain + FAISS → +25% accuracy, -40% review time</li><li><i class="fas fa-circle" style="color:#6eff8e; font-size:0.5rem;"></i> Deployed on GCP with Docker + GitHub Actions CI/CD</li><li><i class="fas fa-circle" style="color:#6eff8e; font-size:0.5rem;"></i> Fine-tuned embedding models, improved recall by 18%</li></ul></div>
+    <div class="exp-log animate-on-scroll"><div class="prompt-line"><span class="symbol">>></span> ML Research Assistant · AISSMS COE <span style="float:right">2024 - present</span></div><ul style="margin-top: 8px; padding-left: 1rem;"><li><i class="fas fa-circle" style="color:#6eff8e; font-size:0.5rem;"></i> Medical imaging: chest X-ray classification (CNN+attention) → 91% AUC</li><li><i class="fas fa-circle" style="color:#6eff8e; font-size:0.5rem;"></i> Active learning pipeline, reduced annotation cost by 32%</li></ul></div>
   </section>
 
+  <div class="section-head animate-on-scroll"><i class="fas fa-certificate"></i><h2>certifications</h2></div><div class="certs-chip">
+    <span class="animate-on-scroll">Deep Learning Specialization (DeepLearning.ai)</span><span class="animate-on-scroll">Machine Learning Engineering for Production (MLOps)</span><span class="animate-on-scroll">TensorFlow Developer Certificate</span><span class="animate-on-scroll">Generative AI with LLMs (Coursera)</span><span class="animate-on-scroll">Data Analytics (Cisco)</span><span class="animate-on-scroll">SQL Database Management (Oracle)</span>
+  </div>
+
+  <section id="contact"><div class="section-head animate-on-scroll"><i class="fas fa-envelope"></i><h2>contact</h2></div><div class="glass-card animate-on-scroll" style="padding: 2rem; text-align: center;"><p><i class="fas fa-envelope" style="color:#22c55e;"></i> <a href="mailto:mandlapured@gmail.com" style="color: #86efac;">mandlapured@gmail.com</a> &nbsp;|&nbsp; <i class="fas fa-map-pin"></i> Pune, India</p><div style="display: flex; gap: 2rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;"><a href="https://github.com/matrix0777" target="_blank" style="color: #86efac;"><i class="fab fa-github"></i> GitHub</a><a href="https://www.linkedin.com/in/dhananjay-mandlapure-642963240/" target="_blank" style="color: #86efac;"><i class="fab fa-linkedin"></i> LinkedIn</a></div></div></section>
 </div>
-
-<a href="#" class="back-top" aria-label="back to top"><i class="fas fa-arrow-up"></i></a>
+<a href="#" class="back-top"><i class="fas fa-arrow-up"></i></a>
 
 <script>
-  (function() {
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
+  // ============================================================
+  // FIXED NEURAL NETWORK: 
+  // LEFT CLICK + DRAG + HOVER = ATTRACTION
+  // LEFT CLICK ON DOT = 5x FASTER MASSIVE BIG BANG
+  // NO CORNER STICKING - SMOOTH BOUNCE + WRAP AROUND
+  // ============================================================
+  const canvas = document.getElementById('nn-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let neurons = [];
+  let mouseX = -1000, mouseY = -1000;
+  let leftDragActive = false;
+  let explosionParticles = [];
 
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+  window.addEventListener('mousemove', (e) => { 
+    mouseX = e.clientX; 
+    mouseY = e.clientY; 
+  });
+  window.addEventListener('mouseleave', () => { leftDragActive = false; });
+  
+  // LEFT DRAG DETECTION - Attraction while holding left button
+  canvas.addEventListener('mousedown', (e) => { 
+    if (e.button === 0) { 
+      leftDragActive = true; 
+      e.preventDefault(); 
+    } 
+  });
+  window.addEventListener('mouseup', (e) => { 
+    if (e.button === 0) leftDragActive = false; 
+  });
+  canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  function resizeCanvas() { 
+    width = window.innerWidth; 
+    height = window.innerHeight; 
+    canvas.width = width; 
+    canvas.height = height;
+    // reposition neurons on resize to avoid clustering
+    if (neurons.length) {
+      neurons.forEach(n => {
+        if (n.x > width) n.x = width - 10;
+        if (n.y > height) n.y = height - 10;
+      });
     }
-    window.addEventListener('resize', resize);
-    resize();
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
-    const PARTICLE_COUNT = 80;
+  const NEURON_COUNT = 220;
 
-    class Particle {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 2.5 + 1.2;
-        this.speedX = (Math.random() - 0.5) * 0.6;
-        this.speedY = (Math.random() - 0.5) * 0.6;
-        this.opacity = Math.random() * 0.6 + 0.2;
+  class Neuron {
+    constructor() { this.reset(); this.pulse = 0; this.exploding = false; this.explodeTimer = 0; }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.radius = Math.random() * 2.5 + 1.2;
+      this.baseBright = Math.random() * 0.55 + 0.3;
+      this.exploding = false;
+      this.explodeTimer = 0;
+    }
+    update() {
+      if (this.exploding) {
+        this.explodeTimer--;
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.explodeTimer <= 0 || this.x < -600 || this.x > width+600 || this.y < -600 || this.y > height+600) {
+          this.reset();
+        }
+        return;
       }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > width) this.speedX *= -1;
-        if (this.y < 0 || this.y > height) this.speedY *= -1;
+      
+      let forceX = 0, forceY = 0;
+      // ATTRACTION when left button is held AND mouse is moving over canvas
+      if (leftDragActive && mouseX > 0 && mouseY > 0 && mouseX < width && mouseY < height) {
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 200) {
+          // Stronger attraction the closer they get
+          const strength = (1 - Math.min(1, dist / 200)) * 1.8;
+          const angle = Math.atan2(dy, dx);
+          forceX += Math.cos(angle) * strength;
+          forceY += Math.sin(angle) * strength;
+          // Pulse effect when near cursor
+          if (dist < 60 && Math.random() < 0.2) this.pulse = 0.9;
+        }
       }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(34, 197, 94, ${this.opacity})`;
+      
+      // Apply forces and add natural random drift
+      this.vx += forceX * 0.25;
+      this.vy += forceY * 0.25;
+      // Damping to prevent infinite speed
+      this.vx *= 0.98;
+      this.vy *= 0.98;
+      // Add tiny random movement for organic feel
+      this.vx += (Math.random() - 0.5) * 0.05;
+      this.vy += (Math.random() - 0.5) * 0.05;
+      
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      // WRAP AROUND - no corner sticking! Teleport to opposite side
+      if (this.x < -50) this.x = width + 50;
+      if (this.x > width + 50) this.x = -50;
+      if (this.y < -50) this.y = height + 50;
+      if (this.y > height + 50) this.y = -50;
+      
+      if (this.pulse > 0) this.pulse -= 0.03;
+    }
+    
+    draw() {
+      if (this.exploding) {
+        const intensity = Math.min(1.0, this.explodeTimer / 3);
+        ctx.beginPath(); 
+        ctx.arc(this.x, this.y, this.radius + 7, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 220, 70, ${intensity})`;
         ctx.fill();
+        ctx.beginPath(); 
+        ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 100, 40, ${intensity * 0.95})`;
+        ctx.fill();
+        return;
+      }
+      
+      let intensity = this.baseBright + (this.pulse * 0.85);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(70, 255, 120, ${Math.min(intensity, 0.95)})`;
+      ctx.fill();
+      if (this.pulse > 0.15) {
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "#8effaa";
+        ctx.fill();
+        ctx.shadowBlur = 0;
       }
     }
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push(new Particle());
+    
+    // MASSIVE 5x FASTER BIG BANG
+    triggerMassiveBang() {
+      if (this.exploding) return;
+      this.exploding = true;
+      this.explodeTimer = 3; // Super fast explosion
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 70 + Math.random() * 50; // Extremely fast
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed;
+      this.pulse = 1.2;
     }
+  }
 
-    function drawLines() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(34, 197, 94, ${0.12 * (1 - dist / 150)})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
+  // Initialize neurons
+  for (let i = 0; i < NEURON_COUNT; i++) {
+    neurons.push(new Neuron());
+  }
+
+  // LEFT CLICK ON DOT = MASSIVE BIG BANG
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clickX = (e.clientX - rect.left) * scaleX;
+    const clickY = (e.clientY - rect.top) * scaleY;
+    
+    let closest = null;
+    let minDist = 30;
+    for (let n of neurons) {
+      if (n.exploding) continue;
+      const dist = Math.hypot(n.x - clickX, n.y - clickY);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = n;
+      }
+    }
+    
+    if (closest) {
+      // Trigger massive bang on clicked neuron
+      closest.triggerMassiveBang();
+      
+      // Chain reaction - all neurons within 150px explode
+      for (let n of neurons) {
+        if (n !== closest && !n.exploding) {
+          const distToCenter = Math.hypot(n.x - closest.x, n.y - closest.y);
+          if (distToCenter < 150) {
+            n.exploding = true;
+            n.explodeTimer = 3;
+            const angle = Math.atan2(n.y - closest.y, n.x - closest.x);
+            const speed = 60 + Math.random() * 40;
+            n.vx = Math.cos(angle) * speed + (Math.random() - 0.5) * 15;
+            n.vy = Math.sin(angle) * speed + (Math.random() - 0.5) * 15;
+            n.pulse = 1.2;
           }
         }
       }
+      
+      // Add explosion particles
+      for (let i = 0; i < 120; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        explosionParticles.push({
+          x: closest.x,
+          y: closest.y,
+          vx: Math.cos(ang) * (30 + Math.random() * 35),
+          vy: Math.sin(ang) * (30 + Math.random() * 35),
+          life: 12,
+          size: Math.random() * 4 + 2
+        });
+      }
     }
+  });
 
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      drawLines();
-      requestAnimationFrame(animate);
-    }
-    animate();
-  })();
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const fills = document.querySelectorAll('.skill-bar-fill');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const fill = entry.target;
-          const percent = fill.getAttribute('data-percent');
-          fill.style.width = percent + '%';
-        }
-      });
-    }, { threshold: 0.3 });
-    fills.forEach(fill => observer.observe(fill));
-
-    const textEl = document.getElementById('typed-text');
-    const phrases = [
-      'AI Engineer · Full‑Stack · MLOps',
-      'LangChain · RAG · GCP',
-      'TensorFlow · PyTorch · Docker',
-    ];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let speed = 80;
-
-    function typeEffect() {
-      const currentPhrase = phrases[phraseIndex];
-      if (!isDeleting) {
-        textEl.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === currentPhrase.length) {
-          isDeleting = true;
-          speed = 1500;
-        } else {
-          speed = 60 + Math.random() * 40;
-        }
-      } else {
-        textEl.textContent = currentPhrase.substring(0, charIndex);
-        charIndex--;
-        if (charIndex < 0) {
-          isDeleting = false;
-          charIndex = 0;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          speed = 400;
-        } else {
-          speed = 30 + Math.random() * 30;
+  // Draw neural connections
+  function drawNeuralWeb() {
+    for (let i = 0; i < neurons.length; i++) {
+      if (neurons[i].exploding) continue;
+      for (let j = i + 1; j < neurons.length; j++) {
+        if (neurons[j].exploding) continue;
+        const dx = neurons[i].x - neurons[j].x;
+        const dy = neurons[i].y - neurons[j].y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 110) {
+          ctx.beginPath();
+          ctx.moveTo(neurons[i].x, neurons[i].y);
+          ctx.lineTo(neurons[j].x, neurons[j].y);
+          let opacity = 0.12 * (1 - dist / 110);
+          // Highlight connections near mouse during drag
+          if (leftDragActive && mouseX > 0) {
+            const distToCursor = Math.hypot((neurons[i].x + neurons[j].x)/2 - mouseX, (neurons[i].y + neurons[j].y)/2 - mouseY);
+            if (distToCursor < 150) opacity += 0.12;
+          }
+          if (neurons[i].pulse > 0.2 || neurons[j].pulse > 0.2) opacity += 0.12;
+          ctx.strokeStyle = `rgba(80, 255, 110, ${Math.min(opacity, 0.6)})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
         }
       }
-      setTimeout(typeEffect, speed);
     }
-    typeEffect();
-  });
-</script>
+  }
 
+  // Update explosion particles
+  function updateExplosions() {
+    for (let i = explosionParticles.length - 1; i >= 0; i--) {
+      const p = explosionParticles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life--;
+      p.vx *= 0.94;
+      p.vy *= 0.94;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 180, 50, ${(p.life / 12) * 0.9})`;
+      ctx.fill();
+      if (p.life <= 0) explosionParticles.splice(i, 1);
+    }
+  }
+
+  // Draw attraction field indicator
+  function drawDragIndicator() {
+    if (leftDragActive && mouseX > 0 && mouseY > 0 && mouseX < width && mouseY < height) {
+      ctx.beginPath();
+      ctx.arc(mouseX, mouseY, 100, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(62, 255, 110, 0.08)';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(mouseX, mouseY, 170, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(100, 255, 140, 0.3)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      // Inner glow
+      ctx.beginPath();
+      ctx.arc(mouseX, mouseY, 45, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(80, 255, 130, 0.12)';
+      ctx.fill();
+    }
+  }
+
+  // Animation loop
+  function animate() {
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#021a0c');
+    grad.addColorStop(0.7, '#000a04');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+    
+    drawNeuralWeb();
+    
+    for (let n of neurons) n.update();
+    for (let n of neurons) n.draw();
+    
+    updateExplosions();
+    drawDragIndicator();
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+
+  // Periodic neural pulses for ambiance
+  setInterval(() => {
+    if (neurons.length) {
+      const randomNeuron = neurons[Math.floor(Math.random() * neurons.length)];
+      if (!randomNeuron.exploding) randomNeuron.pulse = 0.9;
+      // Cascade effect
+      for (let n of neurons) {
+        if (!n.exploding && Math.hypot(randomNeuron.x - n.x, randomNeuron.y - n.y) < 90 && Math.random() < 0.4) {
+          n.pulse = 0.7;
+        }
+      }
+    }
+  }, 900);
+
+  // ============================================================
+  // SCROLL ANIMATIONS - RE-TRIGGER ON EVERY SCROLL
+  // ============================================================
+  const animatedElements = document.querySelectorAll('.animate-on-scroll');
+  
+  function checkAndAnimate() {
+    animatedElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight - 80 && rect.bottom > 50;
+      if (isVisible) {
+        el.classList.add('visible');
+        // Trigger skill bar fill
+        const fillBar = el.querySelector('.level-fill-nn');
+        if (fillBar && fillBar.getAttribute('data-width') && (!fillBar.style.width || fillBar.style.width === '0%')) {
+          fillBar.style.width = fillBar.getAttribute('data-width') + '%';
+        }
+      } else {
+        el.classList.remove('visible');
+      }
+    });
+  }
+  
+  checkAndAnimate();
+  window.addEventListener('scroll', () => requestAnimationFrame(checkAndAnimate));
+  window.addEventListener('resize', () => requestAnimationFrame(checkAndAnimate));
+  
+  // Skill bar observer
+  const skillBars = document.querySelectorAll('.level-fill-nn');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const width = entry.target.getAttribute('data-width');
+        if (width && entry.target.style.width !== width + '%') {
+          entry.target.style.width = width + '%';
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+  skillBars.forEach(bar => barObserver.observe(bar));
+
+  // Typing animation
+  const roles = ["LangChain · RAG · GCP", "92% accuracy · &lt;200ms", "Docker · K8s · MLOps", "PyTorch · TensorFlow · OpenCV"];
+  let roleIdx = 0, charI = 0, deleting = false;
+  const typeSpan = document.getElementById('typing-ai');
+  function typeRole() {
+    if (!typeSpan) return;
+    const full = roles[roleIdx];
+    if (!deleting) {
+      typeSpan.innerText = full.substring(0, charI + 1);
+      charI++;
+      if (charI === full.length) { deleting = true; setTimeout(typeRole, 1700); return; }
+      setTimeout(typeRole, 70);
+    } else {
+      typeSpan.innerText = full.substring(0, charI - 1);
+      charI--;
+      if (charI === 0) { deleting = false; roleIdx = (roleIdx + 1) % roles.length; setTimeout(typeRole, 350); return; }
+      setTimeout(typeRole, 45);
+    }
+  }
+  setTimeout(typeRole, 500);
+</script>
 </body>
 </html>
